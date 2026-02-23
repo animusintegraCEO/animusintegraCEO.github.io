@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animus Integra | Immersive Tech & Automation</title>
+    <style>
+      /* === FONTES === */
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
+      /* === VARIÁVEIS GLOBAIS (MODO ESCURO) === */
+      :root {
+        --bg-color: #020202;
+        --text-color: #e0e0e0;
+        --accent-color: #00f3ff;
+        --structural-color: #ffffff;
+        --structural-border: 1px solid var(--structural-color);
+        --grid-color: rgba(0, 243, 255, 0.08); /* Grid sutil ciano */
+        --vignette-color: rgba(2, 2, 2, 0.9);
+        --logo-filter: invert(1);
+        --logo-bg: #000000;
+        --btn-bg: transparent; /* Fundo do botão transparente no Dark Mode */
+        --card-bg: rgba(20, 20, 20, 0.5); /* Fundo semi-escuro para os cards */
+        --shadow-color: rgba(255, 255, 255, 0.2);
+      }
+
+      /* === VARIÁVEIS (MODO CLARO) === */
+      @media (prefers-color-scheme: light) {
+        :root {
+          --bg-color: #f4f4f4;
+          --text-color: #1a1a1a;
+          --accent-color: #005f6b;
+          --structural-color: #1a1a1a;
+          --structural-border: 1px solid var(--structural-color);
+          --grid-color: rgba(
+            0,
+            0,
+            0,
+            0.04
+          ); /* Grid quase invisível no Light Mode */
+          --vignette-color: rgba(244, 244, 244, 0.8);
+          --logo-filter: invert(0);
+          --logo-bg: #ffffff;
+          --btn-bg: #ffffff; /* Fundo do botão BRANCO SÓLIDO */
+          --card-bg: #ffffff; /* Fundo dos cards BRANCO SÓLIDO para não atrapalhar a leitura */
+          --shadow-color: rgba(0, 0, 0, 0.15);
+        }
+      }
+
+      /* === RESET BÁSICO === */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Space Mono", monospace;
+        line-height: 1.6;
+        overflow-x: hidden;
+        transition:
+          background-color 0.3s ease,
+          color 0.3s ease;
+      }
+
+      /* Grid Background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(var(--grid-color) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: -2;
+        pointer-events: none;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at center,
+          transparent 0%,
+          var(--vignette-color) 100%
+        );
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* === CABEÇALHO === */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 5%;
+        border-bottom: var(--structural-border);
+        background: var(--bg-color);
+        opacity: 0.95;
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 100;
+        transition: all 0.3s ease;
+      }
+
+      .header-left-group {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-container {
+        border: var(--structural-border);
+        padding: 5px 10px;
+        background-color: var(--logo-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .logo-container:hover {
+        box-shadow: 0 0 15px var(--shadow-color);
+      }
+
+      #header-logo-img {
+        height: 55px;
+        filter: var(--logo-filter);
+        transition: filter 0.3s ease;
+      }
+
+      .brand-text {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-color);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+
+      nav a {
+        color: var(--text-color);
+        text-decoration: none;
+        margin-left: 2.5rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: color 0.3s ease;
+        font-family: "Orbitron", sans-serif;
+      }
+
+      nav a:hover {
+        color: var(--accent-color);
+      }
+
+      /* === SEÇÕES GERAIS === */
+      section {
+        padding: 140px 5% 100px;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Orbitron", sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--text-color);
+      }
+
+      /* === HERO SECTION === */
+      .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 2rem;
+        align-items: center;
+      }
+
+      .hero-content h1 {
+        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        border-left: 5px solid var(--accent-color);
+        padding-left: 1.5rem;
+      }
+
+      .hero-content p {
+        max-width: 550px;
+        margin-bottom: 2.5rem;
+        color: var(--text-color);
+        opacity: 0.8;
+        font-size: 1.1rem;
+      }
+
+      /* === VISUAL HIGH TEC === */
+      .hero-visual {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        height: 450px;
+        perspective: 1200px;
+      }
+
+      .gyro-tech-core {
+        width: 320px;
+        height: 320px;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.1s ease-out;
+      }
+
+      .tech-ring {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px solid var(--accent-color);
+      }
+
+      .central-reactor {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 60px;
+        height: 60px;
+        transform: translate(-50%, -50%) translateZ(0);
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          var(--accent-color) 0%,
+          transparent 70%
+        );
+        box-shadow: 0 0 40px var(--accent-color);
+        animation: pulseReactor 2s infinite alternate;
+      }
+
+      .r-outer-thick {
+        width: 100%;
+        height: 100%;
+        border-width: 2px;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        animation: rotateStandard 20s linear infinite;
+        opacity: 0.5;
+      }
+      .r-mid-dashed {
+        width: 85%;
+        height: 85%;
+        border: 2px dashed var(--accent-color);
+        animation: rotateReverse 25s linear infinite;
+        opacity: 0.4;
+      }
+      .r-inner-dotted {
+        width: 70%;
+        height: 70%;
+        border: 3px dotted var(--accent-color);
+        animation: rotateStandard 15s linear infinite;
+        opacity: 0.6;
+      }
+      .r-angled-1 {
+        width: 110%;
+        height: 110%;
+        border: 1px solid var(--structural-color);
+        opacity: 0.2;
+        animation: rotateTilt1 30s linear infinite;
+      }
+      .r-angled-2 {
+        width: 90%;
+        height: 120%;
+        border: 1px solid var(--accent-color);
+        opacity: 0.3;
+        animation: rotateTilt2 20s linear infinite;
+      }
+
+      .data-particle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--accent-color);
+      }
+      .dp-1 {
+        animation: orbit1 8s linear infinite;
+      }
+      .dp-2 {
+        animation: orbit2 12s linear infinite;
+      }
+
+      @keyframes pulseReactor {
+        0% {
+          opacity: 0.5;
+          scale: 0.9;
+        }
+        100% {
+          opacity: 1;
+          scale: 1.1;
+        }
+      }
+      @keyframes rotateStandard {
+        from {
+          transform: translate(-50%, -50%) rotateZ(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotateZ(360deg);
+        }
+      }
+      @keyframes rotateReverse {
+        from {
+          transform: translate(-50%, -50%) rotateZ(360deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotateZ(0deg);
+        }
+      }
+      @keyframes rotateTilt1 {
+        from {
+          transform: translate(-50%, -50%) rotateX(45deg) rotateY(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotateX(45deg) rotateY(360deg);
+        }
+      }
+      @keyframes rotateTilt2 {
+        from {
+          transform: translate(-50%, -50%) rotateX(-30deg) rotateY(90deg)
+            rotateZ(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotateX(-30deg) rotateY(90deg)
+            rotateZ(360deg);
+        }
+      }
+      @keyframes orbit1 {
+        from {
+          transform: translate(-50%, -50%) rotateZ(0deg) translateX(150px)
+            rotateZ(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotateZ(360deg) translateX(150px)
+            rotateZ(-360deg);
+        }
+      }
+      @keyframes orbit2 {
+        from {
+          transform: translate(-50%, -50%) rotateY(0deg) translateZ(120px);
+        }
+        to {
+          transform: translate(-50%, -50%) rotateY(360deg) translateZ(120px);
+        }
+      }
+
+      /* === BOTÃO CTA === */
+      .cta-btn {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        background: transparent;
+        border: var(--structural-border);
+        color: var(--structural-color);
+        text-decoration: none;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: "Orbitron", sans-serif;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        z-index: 1; /* Garante que o texto fique acima do fundo */
+      }
+
+      /* O fundo branco do botão (Aparece no Light Mode) */
+      .cta-btn::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--btn-bg);
+        z-index: -2; /* Fica atrás de tudo */
+      }
+
+      /* A animação de preenchimento ao passar o mouse */
+      .cta-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: var(--structural-color);
+        transition: all 0.3s ease;
+        z-index: -1; /* Fica entre o texto e o fundo branco */
+      }
+
+      .cta-btn:hover {
+        color: var(--bg-color);
+        box-shadow: 0 0 20px var(--shadow-color);
+      }
+      .cta-btn:hover::before {
+        left: 0;
+      }
+
+      /* === SERVIÇOS SECTION === */
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+        margin-top: 4rem;
+      }
+
+      .service-card {
+        border: var(--structural-border);
+        padding: 2.5rem;
+        /* AQUI: Fundo dinâmico da caixa, bloqueando a grade no Light Mode */
+        background: var(--card-bg);
+        transition: all 0.3s ease;
+        position: relative;
+        text-align: center;
+      }
+
+      .service-card:hover {
+        transform: translateY(-10px);
+        border-color: var(--accent-color);
+        box-shadow: 0 10px 30px -10px var(--shadow-color);
+      }
+
+      .service-card h3 {
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+        color: var(--accent-color);
+      }
+
+      /* === RODAPÉ === */
+      footer {
+        text-align: center;
+        padding: 3rem;
+        background: var(--card-bg);
+        border-top: var(--structural-border);
+        font-size: 0.9rem;
+        color: var(--text-color);
+        opacity: 0.8;
+      }
+
+      /* === MODAL DE ZOOM DA LOGO === */
+      .image-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .image-modal-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .modal-image-clone {
+        position: fixed;
+        transition: all 0.5s ease-in-out;
+        z-index: 2001;
+        filter: var(--logo-filter);
+        transform-origin: center center;
+      }
+
+      .modal-image-clone.centered {
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(1) !important;
+        width: auto !important;
+        height: auto !important;
+        max-width: 80vw;
+        max-height: 80vh;
+        box-shadow: none;
+      }
+
+      /* === RESPONSIVIDADE === */
+      @media (max-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr;
+          text-align: center;
+          gap: 3rem;
+        }
+        .hero-content h1 {
+          border-left: none;
+          border-bottom: 4px solid var(--accent-color);
+          padding-left: 0;
+          padding-bottom: 1.5rem;
+        }
+        .hero-visual {
+          height: 350px;
+        }
+        .gyro-tech-core {
+          transform: scale(0.8);
+        }
+        .brand-text {
+          display: none;
+        }
+        nav {
+          display: none;
+        }
+        header {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-left-group">
+        <div class="logo-container" id="logo-trigger" onclick="openLogoModal()">
+          <img
+            src="AnimusIntegra.png"
+            alt="Animus Integra Logo"
+            id="header-logo-img"
+          />
+        </div>
+        <span class="brand-text">Animus Integra</span>
+      </div>
+
+      <nav>
+        <a href="#projetos">Projetos</a>
+        <a href="#servicos">Soluções</a>
+        <a href="#contato">Contato</a>
+      </nav>
+    </header>
+
+    <section id="hero" class="hero">
+      <div class="hero-content">
+        <h1>Projetando a<br />Realidade Física<br />e Digital.</h1>
+        <p>
+          Desenvolvimento de soluções imersivas em WebAR, modelagem de precisão
+          e integração de sistemas para o ambiente industrial.
+        </p>
+        <a href="#servicos" class="cta-btn">Iniciar Integração</a>
+      </div>
+
+      <div class="hero-visual">
+        <div class="gyro-tech-core" id="gyro-tech">
+          <div class="central-reactor"></div>
+          <div class="tech-ring r-outer-thick"></div>
+          <div class="tech-ring r-mid-dashed"></div>
+          <div class="tech-ring r-inner-dotted"></div>
+          <div class="tech-ring r-angled-1"></div>
+          <div class="tech-ring r-angled-2"></div>
+          <div class="data-particle dp-1"></div>
+          <div class="data-particle dp-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="servicos">
+      <h2 style="text-align: center">Protocolos de Atuação</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <h3>WebAR Implementation</h3>
+          <p>
+            Visualização 3D interativa diretamente no navegador. Projetamos
+            modelos virtuais no chão de fábrica sem necessidade de aplicativos
+            pesados, otimizando demonstrações e manutenções.
+          </p>
+        </div>
+        <div class="service-card">
+          <h3>Sistemas de Controle</h3>
+          <p>
+            Desenvolvimento focado em automação industrial e integração de
+            hardwares. Do microcontrolador à rede local, garantindo que as
+            máquinas "conversem" com os dados do projeto.
+          </p>
+        </div>
+        <div class="service-card">
+          <h3>Modelagem & Prototipagem</h3>
+          <p>
+            Modelagem técnica avançada e preparação para manufatura aditiva
+            (Impressão 3D). Transformamos especificações técnicas em estruturas
+            físicas prontas para testes de estresse.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contato">
+      <p>ANIMUS INTEGRA © 2026 // Vinhedo - SP</p>
+      <p
+        style="color: var(--accent-color); margin-top: 10px; font-weight: bold"
+      >
+        [ System Status: Online ]
+      </p>
+    </footer>
+
+    <div
+      class="image-modal-overlay"
+      id="logo-modal"
+      onclick="closeLogoModal()"
+    ></div>
+
+    <script>
+      const gyroTech = document.getElementById("gyro-tech");
+
+      document.addEventListener("mousemove", (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+
+        const rotateX = y * -30;
+        const rotateY = x * 30;
+
+        gyroTech.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      document.addEventListener("mouseleave", () => {
+        gyroTech.style.transition = "transform 0.5s ease-out";
+        gyroTech.style.transform = "rotateX(0deg) rotateY(0deg)";
+      });
+
+      document.addEventListener("mouseenter", () => {
+        gyroTech.style.transition = "none";
+      });
+
+      let clone = null;
+
+      function openLogoModal() {
+        const originalLogo = document.getElementById("header-logo-img");
+        const modal = document.getElementById("logo-modal");
+        const rect = originalLogo.getBoundingClientRect();
+
+        clone = originalLogo.cloneNode(true);
+        clone.classList.add("modal-image-clone");
+        clone.removeAttribute("id");
+
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+
+        modal.appendChild(clone);
+        modal.classList.add("active");
+
+        requestAnimationFrame(() => {
+          clone.classList.add("centered");
+        });
+      }
+
+      function closeLogoModal() {
+        const modal = document.getElementById("logo-modal");
+        const originalLogo = document.getElementById("header-logo-img");
+
+        if (!clone) return;
+
+        const rect = originalLogo.getBoundingClientRect();
+        clone.classList.remove("centered");
+
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+
+        modal.classList.remove("active");
+
+        setTimeout(() => {
+          if (clone && modal.contains(clone)) {
+            modal.removeChild(clone);
+            clone = null;
+          }
+        }, 500);
+      }
+    </script>
+  </body>
+</html>
