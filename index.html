@@ -4,50 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Animus Integra | Immersive Tech & Automation</title>
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
     <style>
       /* === FONTES === */
       @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap");
 
-      /* === VARIÁVEIS GLOBAIS (MODO ESCURO) === */
+      /* === VARIÁVEIS GLOBAIS === */
       :root {
-        --bg-color: #020202;
+        --bg-color: #050505;
         --text-color: #e0e0e0;
         --accent-color: #00f3ff;
         --structural-color: #ffffff;
-        --structural-border: 1px solid var(--structural-color);
-        --grid-color: rgba(0, 243, 255, 0.08); /* Grid sutil ciano */
+        --grid-color: rgba(0, 243, 255, 0.05);
         --vignette-color: rgba(2, 2, 2, 0.9);
-        --logo-filter: invert(1);
-        --logo-bg: #000000;
-        --btn-bg: transparent; /* Fundo do botão transparente no Dark Mode */
-        --card-bg: rgba(20, 20, 20, 0.5); /* Fundo semi-escuro para os cards */
-        --shadow-color: rgba(255, 255, 255, 0.2);
+        --footer-text: #888;
+        --viewer-bg: #ffffff;
       }
 
-      /* === VARIÁVEIS (MODO CLARO) === */
-      @media (prefers-color-scheme: light) {
-        :root {
-          --bg-color: #f4f4f4;
-          --text-color: #1a1a1a;
-          --accent-color: #005f6b;
-          --structural-color: #1a1a1a;
-          --structural-border: 1px solid var(--structural-color);
-          --grid-color: rgba(
-            0,
-            0,
-            0,
-            0.04
-          ); /* Grid quase invisível no Light Mode */
-          --vignette-color: rgba(244, 244, 244, 0.8);
-          --logo-filter: invert(0);
-          --logo-bg: #ffffff;
-          --btn-bg: #ffffff; /* Fundo do botão BRANCO SÓLIDO */
-          --card-bg: #ffffff; /* Fundo dos cards BRANCO SÓLIDO para não atrapalhar a leitura */
-          --shadow-color: rgba(0, 0, 0, 0.15);
-        }
-      }
-
-      /* === RESET BÁSICO === */
+      /* === RESET === */
       * {
         margin: 0;
         padding: 0;
@@ -61,12 +38,9 @@
         font-family: "Space Mono", monospace;
         line-height: 1.6;
         overflow-x: hidden;
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease;
       }
 
-      /* Grid Background */
+      /* === BACKGROUND FIXO === */
       body::before {
         content: "";
         position: fixed;
@@ -81,7 +55,6 @@
         z-index: -2;
         pointer-events: none;
       }
-
       body::after {
         content: "";
         position: fixed;
@@ -104,112 +77,146 @@
         justify-content: space-between;
         align-items: center;
         padding: 1.5rem 5%;
-        border-bottom: var(--structural-border);
-        background: var(--bg-color);
-        opacity: 0.95;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(5, 5, 5, 0.95);
         backdrop-filter: blur(10px);
         position: fixed;
         width: 100%;
         top: 0;
-        z-index: 100;
-        transition: all 0.3s ease;
+        z-index: 1000;
       }
 
       .header-left-group {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 15px;
+      }
+
+      .brand-home-link {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 15px;
       }
 
       .logo-container {
-        border: var(--structural-border);
-        padding: 5px 10px;
-        background-color: var(--logo-bg);
+        border: 1px solid #fff;
+        background-color: #000;
+        width: 48px;
+        height: 48px;
+        padding: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: all 0.3s ease;
         cursor: pointer;
+        transition: all 0.3s ease;
       }
-
       .logo-container:hover {
-        box-shadow: 0 0 15px var(--shadow-color);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        border-color: var(--accent-color);
       }
-
       #header-logo-img {
-        height: 55px;
-        filter: var(--logo-filter);
-        transition: filter 0.3s ease;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: invert(1);
       }
-
       .brand-text {
         font-family: "Orbitron", sans-serif;
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        color: var(--text-color);
         letter-spacing: 2px;
         text-transform: uppercase;
+        color: var(--structural-color);
+        transition: color 0.3s ease;
+      }
+      .brand-home-link:hover .brand-text {
+        color: var(--accent-color);
       }
 
       nav a {
         color: var(--text-color);
         text-decoration: none;
-        margin-left: 2.5rem;
+        margin-left: 2rem;
         text-transform: uppercase;
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         font-weight: 700;
         letter-spacing: 1px;
-        transition: color 0.3s ease;
         font-family: "Orbitron", sans-serif;
+        transition: color 0.3s;
       }
-
       nav a:hover {
         color: var(--accent-color);
       }
 
-      /* === SEÇÕES GERAIS === */
-      section {
-        padding: 140px 5% 100px;
+      /* === PARTIÇÃO 1: HERO === */
+      section.hero {
+        padding: 140px 5% 80px;
         min-height: 90vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
       }
-
       h1,
       h2,
-      h3 {
+      h3,
+      h4 {
         font-family: "Orbitron", sans-serif;
         text-transform: uppercase;
-        letter-spacing: 2px;
-        color: var(--text-color);
       }
 
-      /* === HERO SECTION === */
-      .hero {
+      .hero-grid {
         display: grid;
         grid-template-columns: 1.2fr 0.8fr;
         gap: 2rem;
         align-items: center;
       }
-
       .hero-content h1 {
-        font-size: clamp(2.5rem, 6vw, 4.5rem);
+        font-size: clamp(2.8rem, 5.5vw, 4.4rem);
         line-height: 1.1;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
         border-left: 5px solid var(--accent-color);
-        padding-left: 1.5rem;
+        padding-left: 2rem;
       }
-
       .hero-content p {
-        max-width: 550px;
-        margin-bottom: 2.5rem;
+        max-width: 660px;
+        margin-bottom: 1.5rem;
         color: var(--text-color);
-        opacity: 0.8;
-        font-size: 1.1rem;
+        opacity: 0.9;
+        font-size: 1.2rem;
+      }
+      .brand-etymology {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 2.5rem;
+        max-width: 650px;
+        line-height: 1.6;
+      }
+      .brand-etymology strong {
+        color: var(--accent-color);
+        font-family: "Orbitron", sans-serif;
       }
 
-      /* === VISUAL HIGH TEC === */
+      .cta-btn {
+        display: inline-block;
+        padding: 1rem 2.5rem;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        text-decoration: none;
+        font-family: "Orbitron", sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+        background: transparent;
+      }
+      .cta-btn:hover {
+        background: var(--accent-color);
+        color: #000;
+        box-shadow: 0 0 30px var(--accent-color);
+      }
+
+      /* Visual Gyro (+10%) */
       .hero-visual {
         display: flex;
         justify-content: center;
@@ -218,15 +225,13 @@
         height: 450px;
         perspective: 1200px;
       }
-
       .gyro-tech-core {
-        width: 320px;
-        height: 320px;
+        width: 330px;
+        height: 330px;
         position: relative;
         transform-style: preserve-3d;
         transition: transform 0.1s ease-out;
       }
-
       .tech-ring {
         position: absolute;
         top: 50%;
@@ -235,13 +240,12 @@
         transform: translate(-50%, -50%);
         border: 1px solid var(--accent-color);
       }
-
       .central-reactor {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 60px;
-        height: 60px;
+        width: 66px;
+        height: 66px;
         transform: translate(-50%, -50%) translateZ(0);
         border-radius: 50%;
         background: radial-gradient(
@@ -252,7 +256,6 @@
         box-shadow: 0 0 40px var(--accent-color);
         animation: pulseReactor 2s infinite alternate;
       }
-
       .r-outer-thick {
         width: 100%;
         height: 100%;
@@ -290,13 +293,12 @@
         opacity: 0.3;
         animation: rotateTilt2 20s linear infinite;
       }
-
       .data-particle {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 8px;
-        height: 8px;
+        width: 6px;
+        height: 6px;
         background: var(--accent-color);
         border-radius: 50%;
         box-shadow: 0 0 10px var(--accent-color);
@@ -311,11 +313,11 @@
       @keyframes pulseReactor {
         0% {
           opacity: 0.5;
-          scale: 0.9;
+          transform: translate(-50%, -50%) scale(0.9);
         }
         100% {
           opacity: 1;
-          scale: 1.1;
+          transform: translate(-50%, -50%) scale(1.1);
         }
       }
       @keyframes rotateStandard {
@@ -354,123 +356,300 @@
       }
       @keyframes orbit1 {
         from {
-          transform: translate(-50%, -50%) rotateZ(0deg) translateX(150px)
+          transform: translate(-50%, -50%) rotateZ(0deg) translateX(140px)
             rotateZ(0deg);
         }
         to {
-          transform: translate(-50%, -50%) rotateZ(360deg) translateX(150px)
+          transform: translate(-50%, -50%) rotateZ(360deg) translateX(140px)
             rotateZ(-360deg);
         }
       }
       @keyframes orbit2 {
         from {
-          transform: translate(-50%, -50%) rotateY(0deg) translateZ(120px);
+          transform: translate(-50%, -50%) rotateY(0deg) translateZ(110px);
         }
         to {
-          transform: translate(-50%, -50%) rotateY(360deg) translateZ(120px);
+          transform: translate(-50%, -50%) rotateY(360deg) translateZ(110px);
         }
       }
 
-      /* === BOTÃO CTA === */
-      .cta-btn {
-        display: inline-block;
-        padding: 1rem 2.5rem;
-        background: transparent;
-        border: var(--structural-border);
+      /* === PARTIÇÃO 2: SLIDER === */
+      .impact-section {
+        padding: 8rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3.5rem;
+      }
+      .impact-header {
+        text-align: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 5%;
+      }
+      .impact-header h2 {
+        font-size: clamp(2rem, 4.5vw, 3.15rem);
+        margin-bottom: 0.5rem;
         color: var(--structural-color);
-        text-decoration: none;
-        text-transform: uppercase;
-        font-weight: bold;
-        font-family: "Orbitron", sans-serif;
-        letter-spacing: 1px;
-        transition: all 0.3s ease;
+        display: inline-block;
+        position: relative;
+        max-width: 850px;
+        text-wrap: balance;
+      }
+      .impact-header h2::after {
+        content: "";
+        display: block;
+        width: 65%;
+        height: 3px;
+        background: var(--accent-color);
+        margin: 12px auto 0;
+        box-shadow: 0 0 10px var(--accent-color);
+      }
+      .impact-header p {
+        color: #888;
+        font-size: 1.15rem;
+        max-width: 800px;
+        margin: 2rem auto 0;
+        line-height: 1.6;
+        text-wrap: pretty;
+      }
+
+      .slider-outer {
+        position: relative;
+        width: 100%;
+        padding: 0;
+        overflow: hidden;
+      }
+      .tesla-slider {
+        display: flex;
+        gap: 1.1rem;
+        padding: 3rem 6.5%;
+        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+      .product-card {
+        min-width: calc(20% - 0.9rem);
+        height: 405px;
+        background: rgba(20, 20, 20, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
         position: relative;
         overflow: hidden;
-        z-index: 1; /* Garante que o texto fique acima do fundo */
       }
-
-      /* O fundo branco do botão (Aparece no Light Mode) */
-      .cta-btn::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--btn-bg);
-        z-index: -2; /* Fica atrás de tudo */
-      }
-
-      /* A animação de preenchimento ao passar o mouse */
-      .cta-btn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: var(--structural-color);
-        transition: all 0.3s ease;
-        z-index: -1; /* Fica entre o texto e o fundo branco */
-      }
-
-      .cta-btn:hover {
-        color: var(--bg-color);
-        box-shadow: 0 0 20px var(--shadow-color);
-      }
-      .cta-btn:hover::before {
-        left: 0;
-      }
-
-      /* === SERVIÇOS SECTION === */
-      .services-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 2.5rem;
-        margin-top: 4rem;
-      }
-
-      .service-card {
-        border: var(--structural-border);
-        padding: 2.5rem;
-        /* AQUI: Fundo dinâmico da caixa, bloqueando a grade no Light Mode */
-        background: var(--card-bg);
-        transition: all 0.3s ease;
-        position: relative;
-        text-align: center;
-      }
-
-      .service-card:hover {
-        transform: translateY(-10px);
+      .product-card:hover {
         border-color: var(--accent-color);
-        box-shadow: 0 10px 30px -10px var(--shadow-color);
+        transform: scale(1.08);
+        z-index: 10;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+      }
+      .card-img-placeholder {
+        width: 100%;
+        height: 52%;
+        background: linear-gradient(45deg, #111, #1a1a1a);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .card-content {
+        padding: 1.2rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 8px;
+      }
+      .card-content h3 {
+        font-size: 1.1rem;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .card-content p {
+        font-size: 0.8rem;
+        color: #666;
+        line-height: 1.5;
       }
 
-      .service-card h3 {
-        margin-bottom: 1.5rem;
-        font-size: 1.2rem;
+      .slider-nav {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 6%;
+        background: rgba(0, 0, 0, 0.4);
+        border: none;
+        color: #fff;
+        font-size: 2.8rem;
+        cursor: pointer;
+        z-index: 100;
+        opacity: 0.7;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .slider-nav:hover {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.85);
         color: var(--accent-color);
+      }
+      .nav-prev {
+        left: 0;
+      }
+      .nav-next {
+        right: 0;
+      }
+
+      /* === PARTIÇÃO 3: AUTORIDADE TÉCNICA (Visualizador 3D) === */
+      .tech-authority-section {
+        padding: 10rem 5%;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 5rem;
+        align-items: center;
+      }
+      .model-display-container {
+        width: 100%;
+        height: 550px;
+        background: var(--viewer-bg);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+      model-viewer {
+        width: 100%;
+        height: 100%;
+        outline: none;
+      }
+
+      .tech-content {
+        max-width: 650px;
+        text-align: right;
+        border-right: 5px solid var(--accent-color);
+        padding-right: 3rem;
+        justify-self: end;
+      }
+      .tech-content h2 {
+        font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+        margin-bottom: 2rem;
+        color: var(--structural-color);
+        line-height: 1.1;
+        width: 100%;
+        text-wrap: balance;
+        margin-left: auto;
+      }
+      .tech-content p {
+        color: #999;
+        font-size: 1.15rem;
+        margin-bottom: 2.5rem;
+        line-height: 1.7;
+        width: 100%;
+        text-wrap: pretty;
+        margin-left: auto;
+      }
+
+      .blueprint-specs {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+        background: rgba(0, 243, 255, 0.02);
+        border: 1px dashed rgba(0, 243, 255, 0.2);
+        padding: 2.5rem;
+        font-size: 0.8rem;
+        color: var(--accent-color);
+        text-align: left;
+      }
+      .spec-item span {
+        display: block;
+        color: var(--footer-text);
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+        letter-spacing: 1px;
       }
 
       /* === RODAPÉ === */
       footer {
-        text-align: center;
-        padding: 3rem;
-        background: var(--card-bg);
-        border-top: var(--structural-border);
+        background: #080808;
+        padding: 4rem 5%;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
         font-size: 0.9rem;
-        color: var(--text-color);
-        opacity: 0.8;
+      }
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 3rem;
+      }
+      .footer-col h4 {
+        color: var(--structural-color);
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+      }
+      .contact-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--footer-text);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+      }
+      .contact-link svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--footer-text);
+        transition: fill 0.3s ease;
+      }
+      .contact-link:hover {
+        color: var(--structural-color);
+      }
+      .contact-link:hover svg {
+        fill: var(--accent-color);
+      }
+      .nav-link {
+        display: block;
+        color: var(--footer-text);
+        text-decoration: none;
+        margin-bottom: 0.8rem;
+        transition: all 0.3s;
+        font-size: 0.85rem;
+      }
+      .nav-link:hover {
+        color: var(--accent-color);
+      }
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding-top: 2rem;
+        border-top: 1px solid #1a1a1a;
+        text-align: center;
+        opacity: 0.6;
+        font-size: 0.75rem;
+      }
+      .system-status {
+        color: var(--accent-color);
+        font-weight: bold;
+        font-family: "Space Mono";
+        letter-spacing: 1px;
+        display: block;
+        margin-top: 10px;
       }
 
-      /* === MODAL DE ZOOM DA LOGO === */
+      /* Modal */
       .image-modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(0, 0, 0, 0.9);
         backdrop-filter: blur(5px);
         z-index: 2000;
         opacity: 0;
@@ -480,20 +659,17 @@
         justify-content: center;
         align-items: center;
       }
-
       .image-modal-overlay.active {
         opacity: 1;
         pointer-events: all;
       }
-
       .modal-image-clone {
         position: fixed;
         transition: all 0.5s ease-in-out;
         z-index: 2001;
-        filter: var(--logo-filter);
+        filter: invert(1);
         transform-origin: center center;
       }
-
       .modal-image-clone.centered {
         top: 50% !important;
         left: 50% !important;
@@ -502,121 +678,302 @@
         height: auto !important;
         max-width: 80vw;
         max-height: 80vh;
-        box-shadow: none;
       }
 
-      /* === RESPONSIVIDADE === */
-      @media (max-width: 900px) {
-        .hero {
+      @media (max-width: 1100px) {
+        .product-card {
+          min-width: calc(50% - 1rem);
+        }
+        .hero-grid {
           grid-template-columns: 1fr;
           text-align: center;
-          gap: 3rem;
         }
         .hero-content h1 {
           border-left: none;
-          border-bottom: 4px solid var(--accent-color);
           padding-left: 0;
-          padding-bottom: 1.5rem;
         }
-        .hero-visual {
-          height: 350px;
+        .tech-authority-section {
+          grid-template-columns: 1fr;
         }
-        .gyro-tech-core {
-          transform: scale(0.8);
+        .tech-content {
+          text-align: center;
+          border-right: none;
+          border-top: 4px solid var(--accent-color);
+          padding: 2rem 0 0 0;
+          margin-left: auto;
+          margin-right: auto;
         }
-        .brand-text {
-          display: none;
-        }
-        nav {
-          display: none;
-        }
-        header {
-          justify-content: center;
+        .blueprint-specs {
+          grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
     <header>
-      <div class="header-left-group">
-        <div class="logo-container" id="logo-trigger" onclick="openLogoModal()">
-          <img
-            src="AnimusIntegra.png"
-            alt="Animus Integra Logo"
-            id="header-logo-img"
-          />
+      <a href="#hero" class="brand-home-link">
+        <div class="header-left-group">
+          <div
+            class="logo-container"
+            onclick="
+              event.stopPropagation();
+              openLogoModal();
+            "
+          >
+            <img
+              src="LogoSemNome.png"
+              alt="Animus Integra"
+              id="header-logo-img"
+            />
+          </div>
+          <span class="brand-text">Animus Integra</span>
         </div>
-        <span class="brand-text">Animus Integra</span>
-      </div>
-
+      </a>
       <nav>
-        <a href="#projetos">Projetos</a>
-        <a href="#servicos">Soluções</a>
+        <a href="#hero">Início</a>
+        <a href="#solucoes">Integração</a>
+        <a href="#demonstracao">Demonstração</a>
         <a href="#contato">Contato</a>
       </nav>
     </header>
 
-    <section id="hero" class="hero">
-      <div class="hero-content">
-        <h1>Projetando a<br />Realidade Física<br />e Digital.</h1>
-        <p>
-          Desenvolvimento de soluções imersivas em WebAR, modelagem de precisão
-          e integração de sistemas para o ambiente industrial.
-        </p>
-        <a href="#servicos" class="cta-btn">Iniciar Integração</a>
-      </div>
-
-      <div class="hero-visual">
-        <div class="gyro-tech-core" id="gyro-tech">
-          <div class="central-reactor"></div>
-          <div class="tech-ring r-outer-thick"></div>
-          <div class="tech-ring r-mid-dashed"></div>
-          <div class="tech-ring r-inner-dotted"></div>
-          <div class="tech-ring r-angled-1"></div>
-          <div class="tech-ring r-angled-2"></div>
-          <div class="data-particle dp-1"></div>
-          <div class="data-particle dp-2"></div>
+    <section class="hero" id="hero">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <h1>PROJETANDO A<br />REALIDADE FÍSICA<br />E DIGITAL.</h1>
+          <p>
+            O futuro não é mais uma projeção distante. A Animus Integra
+            materializa ativos complexos no seu espaço agora. O digital
+            finalmente encontrou sua forma física.
+          </p>
+          <div class="brand-etymology">
+            Do latim <strong>Animus</strong> (alma, mente e intenção) e
+            <strong>Integra</strong> (integrar, tornar inteiro). Nossa missão é
+            fundir a intenção digital com a integridade do mundo físico, criando
+            uma experiência única e sem barreiras.
+          </div>
+          <a href="#solucoes" class="cta-btn">INICIAR INTEGRAÇÃO</a>
+        </div>
+        <div class="hero-visual">
+          <div class="gyro-tech-core" id="gyro-tech">
+            <div class="central-reactor"></div>
+            <div class="tech-ring r-outer-thick"></div>
+            <div class="tech-ring r-mid-dashed"></div>
+            <div class="tech-ring r-inner-dotted"></div>
+            <div class="tech-ring r-angled-1"></div>
+            <div class="tech-ring r-angled-2"></div>
+            <div class="data-particle dp-1"></div>
+            <div class="data-particle dp-2"></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="servicos">
-      <h2 style="text-align: center">Protocolos de Atuação</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <h3>WebAR Implementation</h3>
-          <p>
-            Visualização 3D interativa diretamente no navegador. Projetamos
-            modelos virtuais no chão de fábrica sem necessidade de aplicativos
-            pesados, otimizando demonstrações e manutenções.
-          </p>
+    <section class="impact-section" id="solucoes">
+      <div class="impact-header">
+        <h2>O MUNDO NA PALMA DA SUA MÃO</h2>
+        <p>
+          A versatilidade da WebAR integrada aos fluxos de grandes empresas e
+          marcas líderes. Explore a praticidade de materializar qualquer produto
+          instantaneamente.
+        </p>
+      </div>
+      <div class="slider-outer">
+        <button class="slider-nav nav-prev" onclick="moveSlider(-1)">‹</button>
+        <button class="slider-nav nav-next" onclick="moveSlider(1)">›</button>
+        <div class="tesla-slider" id="mainSlider">
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Varejo de Móveis</h3>
+              <p>
+                Teste sofás e mesas no ambiente real com precisão milimétrica.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Eletrodomésticos</h3>
+              <p>Visualize refrigeradores e fogões na sua cozinha planejada.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Decoração Premium</h3>
+              <p>Luminárias e quadros projetados com fidelidade de luz.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Ativos Industriais</h3>
+              <p>Posicionamento de máquinas e painéis em plantas fabris.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Joias & Relógios</h3>
+              <p>A interatividade que gera desejo com realismo fotográfico.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Gadgets & Tech</h3>
+              <p>
+                Hardware exposto em 360°. Entenda a ergonomia de dispositivos.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Hobbies & Arte</h3>
+              <p>Action figures ganham vida na sua estante antes da compra.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Design de Embalagem</h3>
+              <p>Validação de PDV e presença de prateleira para marketing.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Equipamentos Fitness</h3>
+              <p>Valide o espaço para esteiras em ambientes residenciais.</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder"></div>
+            <div class="card-content">
+              <h3>Expandindo Fronteiras</h3>
+              <p>
+                As possibilidades são infinitas. Integre qualquer produto ao
+                WebAR.
+              </p>
+            </div>
+          </div>
         </div>
-        <div class="service-card">
-          <h3>Sistemas de Controle</h3>
-          <p>
-            Desenvolvimento focado em automação industrial e integração de
-            hardwares. Do microcontrolador à rede local, garantindo que as
-            máquinas "conversem" com os dados do projeto.
-          </p>
-        </div>
-        <div class="service-card">
-          <h3>Modelagem & Prototipagem</h3>
-          <p>
-            Modelagem técnica avançada e preparação para manufatura aditiva
-            (Impressão 3D). Transformamos especificações técnicas em estruturas
-            físicas prontas para testes de estresse.
-          </p>
+      </div>
+    </section>
+
+    <section class="tech-authority-section" id="demonstracao">
+      <div
+        class="model-display-container"
+        style="
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 30px;
+          background: #ffffff;
+        "
+      >
+        <h3
+          style="
+            color: #1a1a1a;
+            font-family: &quot;Orbitron&quot;, sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            border-left: 6px solid var(--accent-color);
+            padding-left: 15px;
+            text-transform: uppercase;
+          "
+        >
+          ESCRIVANINHA
+        </h3>
+        <model-viewer
+          src="Mesa.glb"
+          alt="Visualizador Técnico Animus Integra"
+          camera-controls
+          auto-rotate
+          shadow-intensity="1"
+          environment-image="neutral"
+          exposure="0.1"
+          shadow-softness="1"
+        >
+        </model-viewer>
+      </div>
+      <div class="tech-content">
+        <h2>A RIGOR DO DESIGN<br />PARAMÉTRICO</h2>
+        <p>
+          O que você visualiza ao lado é a transposição exata de um ambiente de
+          engenharia para a interface web. Cada componente é desenvolvido sob o
+          rigor do <strong>Autodesk Fusion 360</strong>, garantindo que a
+          volumetria e a montagem digital respeitem as restrições físicas antes
+          de qualquer&nbsp;materialização.
+        </p>
+        <div class="blueprint-specs">
+          <div class="spec-item">
+            <span>PROTOTIPAGEM</span>
+            Autodesk Fusion 360
+          </div>
+          <div class="spec-item">
+            <span>FLUXO TÉCNICO</span>
+            Modelagem Paramétrica
+          </div>
         </div>
       </div>
     </section>
 
     <footer id="contato">
-      <p>ANIMUS INTEGRA © 2026 // Vinhedo - SP</p>
-      <p
-        style="color: var(--accent-color); margin-top: 10px; font-weight: bold"
-      >
-        [ System Status: Online ]
-      </p>
+      <div class="footer-container">
+        <div class="footer-col">
+          <h4>ANIMUS INTEGRA</h4>
+          <div class="contact-list">
+            <a href="mailto:contato@animusintegra.com" class="contact-link"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                /></svg
+              ><span>contato@animusintegra.com</span></a
+            >
+            <a
+              href="https://www.instagram.com/animusintegra/"
+              target="_blank"
+              class="contact-link"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"
+                /></svg
+              ><span>Instagram Oficial</span></a
+            >
+            <a href="#" target="_blank" class="contact-link"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
+                /></svg
+              ><span>Linkedin Oficial</span></a
+            >
+          </div>
+        </div>
+        <div class="footer-col center-col">
+          <div class="nav-block">
+            <h4>NAVEGAÇÃO</h4>
+            <a href="#hero" class="nav-link">Home</a
+            ><a href="#" class="nav-link">Cases & Atuação</a
+            ><a href="#contato" class="nav-link">Sobre nós</a>
+          </div>
+        </div>
+        <div class="footer-col right-col">
+          <div class="nav-block">
+            <h4>SUPORTE TÉCNICO</h4>
+            <a href="#" class="nav-link">Acesso ao Portal</a
+            ><a href="#" class="nav-link">Documentação WebAR</a
+            ><a href="#" class="nav-link">Termos de Serviço</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>ANIMUS INTEGRA © 2026. Tecnologia guiada pela precisão.</div>
+        <span class="system-status">[ SYSTEM STATUS: ONLINE ]</span>
+      </div>
     </footer>
 
     <div
@@ -627,66 +984,73 @@
 
     <script>
       const gyroTech = document.getElementById("gyro-tech");
-
       document.addEventListener("mousemove", (e) => {
         const x = (e.clientX / window.innerWidth - 0.5) * 2;
         const y = (e.clientY / window.innerHeight - 0.5) * 2;
-
-        const rotateX = y * -30;
-        const rotateY = x * 30;
-
-        gyroTech.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        gyroTech.style.transform = `rotateX(${y * -20}deg) rotateY(${x * 20}deg)`;
       });
 
-      document.addEventListener("mouseleave", () => {
-        gyroTech.style.transition = "transform 0.5s ease-out";
-        gyroTech.style.transform = "rotateX(0deg) rotateY(0deg)";
-      });
-
-      document.addEventListener("mouseenter", () => {
-        gyroTech.style.transition = "none";
-      });
+      function moveSlider(direction) {
+        const slider = document.getElementById("mainSlider");
+        const cardWidth =
+          slider.querySelector(".product-card").offsetWidth +
+          parseFloat(getComputedStyle(slider).gap);
+        slider.style.transition =
+          "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)";
+        if (direction === 1) {
+          slider.style.transform = `translateX(-${cardWidth * 5}px)`;
+          setTimeout(() => {
+            slider.style.transition = "none";
+            for (let i = 0; i < 5; i++) {
+              slider.appendChild(slider.firstElementChild);
+            }
+            slider.style.transform = `translateX(0)`;
+          }, 600);
+        } else {
+          slider.style.transition = "none";
+          for (let i = 0; i < 5; i++) {
+            slider.prepend(slider.lastElementChild);
+          }
+          slider.style.transform = `translateX(-${cardWidth * 5}px)`;
+          setTimeout(() => {
+            slider.style.transition =
+              "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)";
+            slider.style.transform = `translateX(0)`;
+          }, 50);
+        }
+      }
 
       let clone = null;
-
       function openLogoModal() {
         const originalLogo = document.getElementById("header-logo-img");
         const modal = document.getElementById("logo-modal");
         const rect = originalLogo.getBoundingClientRect();
-
-        clone = originalLogo.cloneNode(true);
+        clone = document.createElement("img");
         clone.classList.add("modal-image-clone");
-        clone.removeAttribute("id");
-
+        clone.src = originalLogo.src;
         clone.style.top = `${rect.top}px`;
         clone.style.left = `${rect.left}px`;
         clone.style.width = `${rect.width}px`;
         clone.style.height = `${rect.height}px`;
-
         modal.appendChild(clone);
         modal.classList.add("active");
-
         requestAnimationFrame(() => {
+          clone.src = "AnimusIntegra.png";
           clone.classList.add("centered");
         });
       }
-
       function closeLogoModal() {
         const modal = document.getElementById("logo-modal");
-        const originalLogo = document.getElementById("header-logo-img");
-
         if (!clone) return;
-
+        const originalLogo = document.getElementById("header-logo-img");
         const rect = originalLogo.getBoundingClientRect();
         clone.classList.remove("centered");
-
+        clone.src = "LogoSemNome.png";
         clone.style.top = `${rect.top}px`;
         clone.style.left = `${rect.left}px`;
         clone.style.width = `${rect.width}px`;
         clone.style.height = `${rect.height}px`;
-
         modal.classList.remove("active");
-
         setTimeout(() => {
           if (clone && modal.contains(clone)) {
             modal.removeChild(clone);
