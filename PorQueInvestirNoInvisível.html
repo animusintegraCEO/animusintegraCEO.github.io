@@ -1,0 +1,861 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Por que investir no invisível? | Animus Integra</title>
+    <script
+      type="module"
+      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
+    ></script>
+    <style>
+      /* === FONTES EXATAS DO CÓDIGO TERRA === */
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
+      /* === VARIÁVEIS GLOBAIS === */
+      :root {
+        --bg-color: #050505;
+        --text-color: #e0e0e0;
+        --accent-color: #00f3ff;
+        --structural-color: #ffffff;
+        --grid-color: rgba(0, 243, 255, 0.3);
+        --neon-glow:
+          0 0 15px var(--accent-color), 0 0 30px rgba(0, 243, 255, 0.4);
+        --glass-bg: rgba(15, 15, 15, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.05);
+      }
+
+      /* === RESET === */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Space Mono", monospace;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* === BACKGROUND ESTÁTICO (SINAL ESTÁVEL) === */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image:
+          linear-gradient(var(--grid-color) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: -2;
+        pointer-events: none;
+        opacity: 0.3;
+      }
+
+      /* === VINHETA CIRCULAR (CÓDIGO TERRA) === */
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at center,
+          transparent 0%,
+          rgba(5, 5, 5, 0.4) 40%,
+          rgba(0, 0, 0, 0.9) 90%
+        );
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* === CABEÇALHO (BASE MANTIDA) === */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 5%;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(5, 5, 5, 0.95);
+        backdrop-filter: blur(10px);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+      }
+      .header-left-group {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .brand-home-link {
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .logo-container {
+        border: 1px solid #fff;
+        background-color: #000;
+        width: 48px;
+        height: 48px;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+      .logo-container:hover {
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        border-color: var(--accent-color);
+      }
+      #header-logo-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: invert(1);
+      }
+      .brand-text {
+        font-family: "Orbitron", sans-serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--structural-color);
+        transition: color 0.3s ease;
+      }
+      nav {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+      nav a {
+        color: var(--text-color);
+        text-decoration: none;
+        margin-left: 1.5rem;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        font-family: "Orbitron", sans-serif;
+        transition: color 0.3s;
+      }
+      nav a:hover {
+        color: var(--accent-color);
+      }
+      .nav-btn-back {
+        color: var(--accent-color);
+        border-bottom: 1px solid transparent;
+      }
+      .nav-btn-back:hover {
+        border-bottom: 1px solid var(--accent-color);
+      }
+
+      /* Efeito NEON idêntico ao index: sutil e elegante */
+      .highlight-neon {
+        color: var(--accent-color);
+        font-weight: 700;
+        text-transform: none; /* Mantém a caixa baixa para não sobressair ao título */
+        letter-spacing: normal;
+        text-shadow:
+          0 0 5px rgba(0, 243, 255, 0.5),
+          0 0 10px rgba(0, 243, 255, 0.2); /* Brilho reduzido para respeitar a hierarquia */
+        transition: 0.3s ease;
+      }
+
+      /* Brilho levemente mais nítido apenas no hover, se desejar */
+      .highlight-neon:hover {
+        text-shadow: 0 0 8px var(--accent-color);
+      }
+
+      /* ========================================================= */
+      /* === DESIGN MODERNO DAS PARTIÇÕES (DIDÁTICO & HIGH-END) === */
+      /* ========================================================= */
+
+      /* Textos Globais Padrão para evitar bugs de fonte */
+      p {
+        font-family: "Space Mono", monospace;
+        font-size: 1.1rem;
+        color: #b3b3b3;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        text-wrap: pretty;
+      }
+      h2,
+      h3 {
+        font-family: "Orbitron", sans-serif;
+        color: var(--structural-color);
+        text-transform: uppercase;
+      }
+
+      .section-wrapper {
+        padding: 160px 5% 80px;
+        max-width: 1300px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+      }
+
+      /* Partição 1: Layout Amplo com Eixo Horizontal */
+      #cliente {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 180px 8% 100px;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      /* A LINHA NEON ENTRE TÍTULO E SUBTÍTULO */
+      .neon-divider {
+        width: 100%;
+        height: 6px;
+        background: var(--accent-color);
+        box-shadow: var(--neon-glow);
+        margin: 2.5rem 0;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Container do Manifesto - Espalhado lateralmente */
+      .hero-manifesto {
+        max-width: 85%;
+        z-index: 2;
+      }
+
+      .hero-manifesto h1 {
+        text-align: left !important;
+        font-family: "Orbitron", sans-serif;
+        /* Reduzido para bater com o padrão index */
+        font-size: clamp(3rem, 8vw, 5rem) !important;
+        line-height: 1.1;
+        letter-spacing: -1px;
+        margin: 0;
+        color: var(--structural-color);
+      }
+
+      .hero-manifesto p {
+        text-align: left !important;
+        max-width: 800px; /* Largura para leitura confortável */
+        margin: 0;
+        /* Tamanho padrão Space Mono do index */
+        font-size: 1rem;
+        color: #b3b3b3;
+        line-height: 1.6;
+      }
+
+      /* Ponto de Interrogação - Jogado para a direita para dar espaço ao texto */
+      .mystery-portal {
+        position: absolute;
+        right: 10%;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+      }
+
+      .mystery-icon {
+        font-family: "Orbitron", sans-serif;
+        font-size: 20rem;
+        font-weight: 700;
+        position: relative;
+        user-select: none;
+        animation: floatClassic 5s ease-in-out infinite;
+        cursor: default;
+        color: transparent;
+        -webkit-text-stroke: 3px var(--accent-color);
+        text-shadow: 0 0 15px rgb(0, 0, 0);
+        background: linear-gradient(
+          135deg,
+          rgba(15, 15, 15, 0.95) 0%,
+          rgba(30, 30, 30, 0.8) 100%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      @keyframes floatClassic {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      /* Ajuste na Partição 3: LED no Topo */
+      #futuro .bento-card.span-8 {
+        border-top: 4px solid var(--accent-color);
+        box-shadow: 0 -10px 20px -10px var(--accent-color);
+      }
+
+      /* --- PARTIÇÃO 2: BENTO GRID (Dinâmico e Didático) === */
+      .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 1.5rem;
+      }
+
+      .bento-card {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(10px);
+        padding: 2.5rem;
+        position: relative;
+        transition:
+          transform 0.4s ease,
+          border-color 0.4s ease;
+      }
+      .bento-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(0, 243, 255, 0.3);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      }
+
+      /* Layout dos Cards no Grid */
+      .span-8 {
+        grid-column: span 8;
+      }
+      .span-4 {
+        grid-column: span 4;
+      }
+      .span-12 {
+        grid-column: span 12;
+      }
+
+      .bento-card h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+      }
+      .bento-card h3 {
+        font-size: 1.3rem;
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+      }
+
+      /* O Destaque LED Lateral (Para o Bento Card principal) */
+      .led-indicator {
+        position: absolute;
+        left: 0;
+        top: 2.5rem;
+        bottom: 2.5rem;
+        width: 4px;
+        background: var(--accent-color);
+        box-shadow: var(--neon-glow);
+        border-radius: 0 4px 4px 0;
+      }
+
+      /* --- ELEMENTOS VISUAIS FUTURISTAS (HUDs) === */
+      .hud-graphics {
+        width: 100%;
+        height: 250px;
+        margin-top: 2rem;
+        border: 1px solid rgba(0, 243, 255, 0.2);
+        background:
+          repeating-linear-gradient(
+            0deg,
+            rgba(0, 243, 255, 0.03) 0px,
+            rgba(0, 243, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 20px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(0, 243, 255, 0.03) 0px,
+            rgba(0, 243, 255, 0.03) 1px,
+            transparent 1px,
+            transparent 20px
+          );
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Cantoneiras Sci-Fi para as caixas de imagem */
+      .corner {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        border-color: var(--accent-color);
+        border-style: solid;
+        opacity: 0.8;
+      }
+      .c-tl {
+        top: -1px;
+        left: -1px;
+        border-width: 2px 0 0 2px;
+      }
+      .c-tr {
+        top: -1px;
+        right: -1px;
+        border-width: 2px 2px 0 0;
+      }
+      .c-bl {
+        bottom: -1px;
+        left: -1px;
+        border-width: 0 0 2px 2px;
+      }
+      .c-br {
+        bottom: -1px;
+        right: -1px;
+        border-width: 0 2px 2px 0;
+      }
+
+      .hud-label {
+        position: absolute;
+        top: 10px;
+        left: 15px;
+        font-family: "Orbitron";
+        font-size: 0.6rem;
+        color: var(--accent-color);
+        letter-spacing: 2px;
+      }
+
+      .placeholder-img-text {
+        font-family: "Space Mono";
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.4);
+        border: 1px dashed rgba(255, 255, 255, 0.2);
+        padding: 20px;
+      }
+
+      /* === RODAPÉ EXATO DO CÓDIGO TERRA === */
+      footer {
+        background: #080808;
+        padding: 1.5rem 5%;
+        border-top: 1px solid rgba(255, 255, 255, 0.15);
+        font-size: 1.1rem;
+      }
+      .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 1.2fr 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+      .footer-col h4 {
+        color: var(--structural-color);
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+      }
+      .center-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .center-col .nav-block {
+        width: 100%;
+        text-align: center;
+      }
+      .right-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .right-col .nav-block {
+        text-align: right;
+        width: 100%;
+      }
+      .contact-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .contact-link,
+      .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-family: "Space Mono", monospace;
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+      .contact-link svg {
+        width: 16px;
+        height: 16px;
+        fill: var(--text-color);
+        transition: all 0.3s ease;
+      }
+      .contact-link:hover,
+      .nav-link:hover {
+        color: var(--accent-color);
+      }
+      .contact-link:hover svg {
+        fill: var(--accent-color);
+        filter: drop-shadow(0 0 5px var(--accent-color));
+      }
+      .nav-link {
+        display: block;
+        color: var(--footer-text);
+        text-decoration: none;
+        margin-bottom: 0.8rem;
+        transition: 0.3s;
+        font-size: 1.05rem;
+      }
+      .nav-link:hover {
+        color: var(--accent-color);
+      }
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 1.5rem auto 0;
+        padding-top: 1rem;
+        border-top: 1px solid #1a1a1a;
+        text-align: center;
+        opacity: 0.6;
+        font-size: 0.95rem;
+      }
+      .system-status {
+        color: var(--accent-color);
+        font-weight: bold;
+        font-family: "Space Mono";
+        letter-spacing: 1px;
+        display: block;
+        margin-top: 10px;
+      }
+
+      /* === MODAL EXATO DO CÓDIGO TERRA === */
+      .image-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        opacity: 0;
+        pointer-events: none;
+        transition: 0.3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .image-modal-overlay.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+      .modal-image-clone {
+        position: fixed;
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 2001;
+        filter: invert(1);
+        transform-origin: center center;
+        object-fit: contain;
+      }
+      .modal-image-clone.centered {
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(1) !important;
+        width: 95vw !important;
+        height: 85vh !important;
+        max-width: 1400px;
+      }
+
+      /* Responsividade para o Bento Grid */
+      @media (max-width: 1024px) {
+        #cliente {
+          grid-template-columns: 1fr;
+          padding-top: 140px;
+        }
+        .hero-manifesto {
+          padding-left: 0;
+        }
+        .mystery-portal {
+          margin-top: 2rem;
+        }
+        #cliente::before {
+          display: none; /* Oculta a linha no mobile para limpar o layout */
+        }
+
+        .span-8,
+        .span-4 {
+          grid-column: span 12;
+        }
+        .footer-container {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+        .center-col,
+        .right-col {
+          align-items: center;
+        }
+        .center-col .nav-block,
+        .right-col .nav-block {
+          text-align: center;
+        }
+        .contact-link {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="brand-home-link">
+        <div class="header-left-group">
+          <div
+            class="logo-container"
+            onclick="
+              event.preventDefault();
+              event.stopPropagation();
+              openLogoModal();
+            "
+          >
+            <img
+              src="LogoSemNome.png"
+              alt="Animus Integra"
+              id="header-logo-img"
+            />
+          </div>
+          <span class="brand-text">Animus Integra</span>
+        </div>
+      </a>
+      <nav>
+        <a href="#cliente">O Cliente</a>
+        <a href="#animus">A Animus</a>
+        <a href="#futuro">O Futuro</a>
+        <a href="index.html" class="nav-btn-back">[ VOLTAR ]</a>
+      </nav>
+    </header>
+
+    <section id="cliente">
+      <div class="hero-manifesto">
+        <h1 class="manifesto-title">POR QUE INVESTIR<br />NO INVISÍVEL?</h1>
+
+        <div class="neon-divider"></div>
+
+        <p class="manifesto-text">
+          O mercado estático não sustenta mais o desejo. O que separa a dúvida
+          do fechamento é a
+          <span class="highlight-neon">presença</span>. O invisível é o
+          <span class="highlight-neon">abismo</span> que existe entre um anúncio
+          comum e a posse digital imediata do seu produto.
+        </p>
+        <p class="manifesto-text">
+          Investir no invisível não é sobre tecnologia, é sobre o domínio da
+          <span class="highlight-neon">percepção</span>. É garantir que o seu
+          cliente não apenas veja, mas vivencie a integridade de cada detalhe,
+          preenchendo o vazio entre a tela e a realidade com confiança absoluta
+          e valor inestimável.
+        </p>
+      </div>
+
+      <div class="mystery-portal">
+        <div class="mystery-icon">?</div>
+      </div>
+    </section>
+
+    <section class="section-wrapper" id="animus" style="padding-top: 80px">
+      <div class="bento-grid">
+        <div class="bento-card span-8">
+          <div class="led-indicator"></div>
+          <h2>A Intenção da Malha</h2>
+          <p>
+            A <strong>Animus Integra</strong> não existe para desenhar "objetos
+            bonitinhos". Nós lidamos com o rigor técnico. Investimos
+            massivamente em tecnologia porque entendemos a complexidade de
+            manter a integridade de um projeto de engenharia na transição para a
+            web.
+          </p>
+          <div class="hud-graphics">
+            <span class="hud-label">DADOS ESTRUTURAIS</span>
+            <div class="corner c-tl"></div>
+            <div class="corner c-tr"></div>
+            <div class="corner c-bl"></div>
+            <div class="corner c-br"></div>
+            <div class="placeholder-img-text">
+              GRÁFICO DE WIREFRAME / MALHA 3D AQUI
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="bento-card span-4"
+          style="display: flex; flex-direction: column; justify-content: center"
+        >
+          <h3>Engenharia Oculta</h3>
+          <p>
+            Nosso trabalho — que ninguém vê — é garantir que arquivos gerados em
+            <strong>Autodesk Fusion 360</strong> rodem sem atritos no celular do
+            usuário final.
+          </p>
+          <p>
+            Nós otimizamos o código e a geometria para que a sua marca entregue
+            <strong>interatividade fluida e pura.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-wrapper" id="futuro" style="padding-top: 80px">
+      <div class="bento-grid">
+        <div
+          class="bento-card span-4"
+          style="border-top: 3px solid var(--accent-color)"
+        >
+          <h3>O Fim da Era Estática</h3>
+          <p>
+            O mercado das galerias de fotos estagnou. Hoje, apresentar um
+            produto exige eliminar a dúvida instantaneamente.
+          </p>
+          <p>
+            Não há melhor forma de construir confiança do que
+            <strong>colocar a solução nas mãos de quem precisa dela</strong>, em
+            tempo real.
+          </p>
+        </div>
+
+        <div class="bento-card span-8">
+          <h2>Materializando o Amanhã</h2>
+          <p>
+            Nosso objetivo é apagar a linha divisória do digital. Queremos
+            elevar os seus ativos a um patamar onde eles não sejam apenas
+            listados, mas
+            <strong>explorados e compreendidos profundamente</strong> antes do
+            primeiro aperto de mão.
+          </p>
+          <div class="hud-graphics" style="height: 180px">
+            <span class="hud-label">PROJEÇÃO DE INTERAÇÃO B2B</span>
+            <div class="corner c-tl"></div>
+            <div class="corner c-tr"></div>
+            <div class="corner c-bl"></div>
+            <div class="corner c-br"></div>
+            <div class="placeholder-img-text">
+              IMAGEM DE USUÁRIO INTERAGINDO / AR AQUI
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer id="contato">
+      <div class="footer-container">
+        <div class="footer-col">
+          <h4>ANIMUS INTEGRA</h4>
+          <div class="contact-list">
+            <a href="mailto:contato@animusintegra.com" class="contact-link"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                /></svg
+              ><span>contato@animusintegra.com</span></a
+            >
+            <a
+              href="https://www.instagram.com/animusintegra/"
+              target="_blank"
+              class="contact-link"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"
+                /></svg
+              ><span>Instagram Oficial</span></a
+            >
+            <a
+              href="https://www.linkedin.com/company/animus-integra/"
+              target="_blank"
+              class="contact-link"
+              ><svg viewBox="0 0 24 24">
+                <path
+                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
+                /></svg
+              ><span>Linkedin Oficial</span></a
+            >
+          </div>
+        </div>
+        <div class="footer-col center-col">
+          <div class="nav-block">
+            <h4>NAVEGAÇÃO</h4>
+            <a href="index.html#hero" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Cases & Atuação</a>
+            <a href="#contato" class="nav-link">Sobre nós</a>
+          </div>
+        </div>
+        <div class="footer-col right-col">
+          <div class="nav-block">
+            <h4>SUPORTE TÉCNICO</h4>
+            <a href="#" class="nav-link">Acesso ao Portal</a>
+            <a href="#" class="nav-link">Documentação WebAR</a>
+            <a href="#" class="nav-link">Termos de Serviço</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>ANIMUS INTEGRA © 2026. Tecnologia guiada pela precisão.</div>
+        <span class="system-status">[ SYSTEM STATUS: ONLINE ]</span>
+      </div>
+    </footer>
+
+    <div
+      class="image-modal-overlay"
+      id="logo-modal"
+      onclick="closeLogoModal()"
+    ></div>
+
+    <script>
+      let clone = null;
+      function openLogoModal() {
+        const originalLogo = document.getElementById("header-logo-img");
+        const modal = document.getElementById("logo-modal");
+        const rect = originalLogo.getBoundingClientRect();
+
+        clone = document.createElement("img");
+        clone.classList.add("modal-image-clone");
+        clone.src = originalLogo.src;
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+
+        modal.appendChild(clone);
+        modal.classList.add("active");
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            clone.src = "AnimusIntegra.png";
+            clone.classList.add("centered");
+          });
+        });
+      }
+
+      function closeLogoModal() {
+        const modal = document.getElementById("logo-modal");
+        if (!clone) return;
+
+        const originalLogo = document.getElementById("header-logo-img");
+        const rect = originalLogo.getBoundingClientRect();
+
+        clone.classList.remove("centered");
+        clone.src = "LogoSemNome.png";
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`;
+        clone.style.height = `${rect.height}px`;
+
+        modal.classList.remove("active");
+
+        setTimeout(() => {
+          if (clone && modal.contains(clone)) {
+            modal.removeChild(clone);
+            clone = null;
+          }
+        }, 500);
+      }
+    </script>
+  </body>
+</html>

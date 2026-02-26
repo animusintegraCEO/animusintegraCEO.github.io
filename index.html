@@ -18,12 +18,10 @@
         --text-color: #e0e0e0;
         --accent-color: #00f3ff;
         --structural-color: #ffffff;
-        --grid-color: rgba(0, 243, 255, 0.05);
-        --vignette-color: rgba(2, 2, 2, 0.9);
-        --footer-text: #888;
-        --viewer-bg: #ffffff;
+        --grid-color: rgba(0, 243, 255, 0.3);
+        --neon-glow:
+          0 0 15px var(--accent-color), 0 0 30px rgba(0, 243, 255, 0.4);
       }
-
       /* === RESET === */
       * {
         margin: 0;
@@ -31,7 +29,6 @@
         box-sizing: border-box;
         scroll-behavior: smooth;
       }
-
       body {
         background-color: var(--bg-color);
         color: var(--text-color);
@@ -40,7 +37,7 @@
         overflow-x: hidden;
       }
 
-      /* === BACKGROUND FIXO === */
+      /* === BACKGROUND ESTÁTICO (SINAL ESTÁVEL) === */
       body::before {
         content: "";
         position: fixed;
@@ -54,7 +51,10 @@
         background-size: 40px 40px;
         z-index: -2;
         pointer-events: none;
+        opacity: 0.3; /* Nível fixo de visibilidade que você ajustou */
       }
+
+      /* === RESTAURAÇÃO DA VINHETA CIRCULAR (CÓDIGO TERRA) === */
       body::after {
         content: "";
         position: fixed;
@@ -62,13 +62,55 @@
         left: 0;
         width: 100%;
         height: 100%;
+        /* O segredo do 'túnel' visual: centro transparente, bordas escuras */
         background: radial-gradient(
           circle at center,
           transparent 0%,
-          var(--vignette-color) 100%
+          rgba(5, 5, 5, 0.4) 40%,
+          rgba(0, 0, 0, 0.9) 90%
         );
         z-index: -1;
         pointer-events: none;
+      }
+
+      .background-light-focus {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2; /* Fica entre o grid (-3) e a vinheta (-1) */
+        pointer-events: none;
+        transition:
+          background 1.2s ease-in-out,
+          opacity 1s ease;
+        opacity: 0;
+      }
+
+      /* FOCO DA PARTIÇÃO 2 (Laterais) */
+      body[data-active-section="solucoes"] .background-light-focus {
+        opacity: 1;
+        background:
+          radial-gradient(
+            circle at 0% 50%,
+            rgba(0, 243, 255, 0.2) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 100% 50%,
+            rgba(0, 243, 255, 0.2) 0%,
+            transparent 50%
+          ) !important;
+      }
+
+      /* FOCO DA PARTIÇÃO 3 (Inferior) */
+      body[data-active-section="descoberta"] .background-light-focus {
+        opacity: 1;
+        background: radial-gradient(
+          circle at 50% 100%,
+          rgba(0, 243, 255, 0.25) 0%,
+          transparent 70%
+        ) !important;
       }
 
       /* === CABEÇALHO === */
@@ -85,13 +127,11 @@
         top: 0;
         z-index: 1000;
       }
-
       .header-left-group {
         display: flex;
         align-items: center;
         gap: 15px;
       }
-
       .brand-home-link {
         text-decoration: none;
         color: inherit;
@@ -99,7 +139,6 @@
         align-items: center;
         gap: 15px;
       }
-
       .logo-container {
         border: 1px solid #fff;
         background-color: #000;
@@ -110,7 +149,7 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all 0.3s ease;
+        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
       }
       .logo-container:hover {
         box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
@@ -131,10 +170,6 @@
         color: var(--structural-color);
         transition: color 0.3s ease;
       }
-      .brand-home-link:hover .brand-text {
-        color: var(--accent-color);
-      }
-
       nav a {
         color: var(--text-color);
         text-decoration: none;
@@ -165,7 +200,6 @@
         font-family: "Orbitron", sans-serif;
         text-transform: uppercase;
       }
-
       .hero-grid {
         display: grid;
         grid-template-columns: 1.2fr 0.8fr;
@@ -178,6 +212,9 @@
         margin-bottom: 1.8rem;
         border-left: 5px solid var(--accent-color);
         padding-left: 2rem;
+        /* ADICIONE ESTA LINHA ABAIXO */
+        /* Mantém o neon na esquerda, mas "encolhe" o brilho para não vazar em cima/baixo */
+        box-shadow: -12px 0 15px -12px var(--accent-color);
       }
       .hero-content p {
         max-width: 660px;
@@ -198,25 +235,33 @@
         font-family: "Orbitron", sans-serif;
       }
 
+      /* === BOTÃO CTA: PRETO SÓLIDO (REPROUSO) === */
       .cta-btn {
         display: inline-block;
         padding: 1rem 2.5rem;
         border: 1px solid var(--accent-color);
-        color: var(--accent-color);
-        text-decoration: none;
+        color: var(--accent-color); /* Texto ciano no preto */
+
+        /* ESTADO INICIAL: 100% Preto e Opaco */
+        background-color: #000;
+
         font-family: "Orbitron", sans-serif;
         font-weight: bold;
         letter-spacing: 1px;
+        text-decoration: none;
         transition: all 0.3s ease;
-        background: transparent;
-      }
-      .cta-btn:hover {
-        background: var(--accent-color);
-        color: #000;
-        box-shadow: 0 0 30px var(--accent-color);
+        box-shadow: none;
       }
 
-      /* Visual Gyro (+10%) */
+      /* ESTADO HOVER: Acende o fundo com a cor neon */
+      .cta-btn:hover {
+        background-color: var(--accent-color);
+        color: #000; /* Texto preto sobre o fundo aceso */
+        box-shadow: 0 0 25px var(--accent-color);
+        transform: translateY(-2px);
+      }
+
+      /* Visual Gyro e Órbitas */
       .hero-visual {
         display: flex;
         justify-content: center;
@@ -238,7 +283,9 @@
         left: 50%;
         border-radius: 50%;
         transform: translate(-50%, -50%);
-        border: 1px solid var(--accent-color);
+        border: 1.5px solid var(--accent-color); /* Linha mais firme */
+        opacity: 0.6; /* Mais visível */
+        box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
       }
       .central-reactor {
         position: absolute;
@@ -253,7 +300,7 @@
           var(--accent-color) 0%,
           transparent 70%
         );
-        box-shadow: 0 0 40px var(--accent-color);
+        box-shadow: var(--neon-glow);
         animation: pulseReactor 2s infinite alternate;
       }
       .r-outer-thick {
@@ -280,18 +327,14 @@
         opacity: 0.6;
       }
       .r-angled-1 {
-        width: 110%;
-        height: 110%;
-        border: 1px solid var(--structural-color);
-        opacity: 0.2;
-        animation: rotateTilt1 30s linear infinite;
+        width: 180px;
+        height: 180px;
+        transform: translate(-50%, -50%) rotateX(30deg) rotateY(300deg);
       }
       .r-angled-2 {
-        width: 90%;
-        height: 120%;
-        border: 1px solid var(--accent-color);
-        opacity: 0.3;
-        animation: rotateTilt2 20s linear infinite;
+        width: 180px;
+        height: 180px;
+        transform: translate(-50%, -50%) rotateX(-65deg) rotateY(-15deg);
       }
       .data-particle {
         position: absolute;
@@ -399,10 +442,12 @@
         content: "";
         display: block;
         width: 65%;
-        height: 3px;
+        height: 6px; /* Ajustado para 6px */
         background: var(--accent-color);
         margin: 12px auto 0;
-        box-shadow: 0 0 10px var(--accent-color);
+        box-shadow:
+          0 0 20px var(--accent-color),
+          0 0 40px rgba(0, 243, 255, 0.4);
       }
       .impact-header p {
         color: #888;
@@ -410,9 +455,7 @@
         max-width: 800px;
         margin: 2rem auto 0;
         line-height: 1.6;
-        text-wrap: pretty;
       }
-
       .slider-outer {
         position: relative;
         width: 100%;
@@ -427,7 +470,7 @@
       }
       .product-card {
         min-width: calc(20% - 0.9rem);
-        height: 405px;
+        height: 430px;
         background: rgba(20, 20, 20, 0.8);
         border: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
@@ -444,30 +487,34 @@
       }
       .card-img-placeholder {
         width: 100%;
-        height: 52%;
-        background: linear-gradient(45deg, #111, #1a1a1a);
+        height: 50%;
+        background: #f0f0f0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       }
+      .card-img-placeholder model-viewer {
+        width: 100%;
+        height: 100%;
+        outline: none;
+      }
       .card-content {
-        padding: 1.2rem;
+        padding: 1.4rem;
         flex-grow: 1;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        gap: 8px;
+        gap: 10px;
       }
       .card-content h3 {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         color: #fff;
         text-transform: uppercase;
         letter-spacing: 1px;
       }
       .card-content p {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         color: #666;
         line-height: 1.5;
       }
-
       .slider-nav {
         position: absolute;
         top: 0;
@@ -497,141 +544,273 @@
         right: 0;
       }
 
-      /* === PARTIÇÃO 3: AUTORIDADE TÉCNICA (Visualizador 3D) === */
-      .tech-authority-section {
-        padding: 10rem 5%;
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 5rem;
-        align-items: center;
-      }
-      .model-display-container {
+      /* === ANIMAÇÃO RETICÊNCIAS (EXPANDINDO FRONTEIRAS) === */
+      .ellipsis-container {
         width: 100%;
-        height: 550px;
-        background: var(--viewer-bg);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        position: relative;
-      }
-      model-viewer {
-        width: 100%;
-        height: 100%;
-        outline: none;
+        gap: 8px;
+        /* Fundo já é #f0f0f0 pelo pai .card-img-placeholder */
       }
 
-      .tech-content {
-        max-width: 650px;
-        text-align: right;
-        border-right: 5px solid var(--accent-color);
-        padding-right: 3rem;
-        justify-self: end;
-      }
-      .tech-content h2 {
-        font-size: clamp(2.4rem, 4.5vw, 3.4rem);
-        margin-bottom: 2rem;
-        color: var(--structural-color);
-        line-height: 1.1;
-        width: 100%;
-        text-wrap: balance;
-        margin-left: auto;
-      }
-      .tech-content p {
-        color: #999;
-        font-size: 1.15rem;
-        margin-bottom: 2.5rem;
-        line-height: 1.7;
-        width: 100%;
-        text-wrap: pretty;
-        margin-left: auto;
+      .ellipsis-dot {
+        width: 14px;
+        height: 14px;
+        background-color: #000;
+        border-radius: 50%;
+        /* 2.5s totais: dá o 'tranco' rápido e pausa bastante no final */
+        animation: waveBounce 2.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
       }
 
-      .blueprint-specs {
+      /* Atrasos para criar a onda perfeita */
+      .ellipsis-dot:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .ellipsis-dot:nth-child(2) {
+        animation-delay: 0.15s;
+      }
+      .ellipsis-dot:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+
+      /* Movimento apenas no começo da animação (0 a 25%), o resto é espera */
+      @keyframes waveBounce {
+        0%,
+        25%,
+        100% {
+          transform: translateY(0);
+        }
+        12.5% {
+          transform: translateY(-16px);
+        }
+      }
+
+      /* === PARTIÇÃO 3: REFINAMENTO TECH === */
+      .tech-authority-section {
+        padding: 10rem 5%;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2.5rem;
-        background: rgba(0, 243, 255, 0.02);
-        border: 1px dashed rgba(0, 243, 255, 0.2);
-        padding: 2.5rem;
-        font-size: 0.8rem;
-        color: var(--accent-color);
-        text-align: left;
-      }
-      .spec-item span {
-        display: block;
-        color: var(--footer-text);
-        text-transform: uppercase;
-        margin-bottom: 0.5rem;
-        letter-spacing: 1px;
+        grid-template-columns: 1fr 1fr;
+        gap: 5rem;
+        align-items: center;
+        background: radial-gradient(
+          circle at 80% 50%,
+          rgba(0, 243, 255, 0.05) 0%,
+          transparent 60%
+        );
       }
 
-      /* === RODAPÉ === */
+      .discovery-terminal {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      /* === CAIXAS DIRECIONÁVEIS: BARRA REFINADA === */
+      .discovery-btn {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 580px;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.02);
+
+        /* REDUZIDO: De 4px para 2px para um visual mais clean */
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-left: 2px solid var(--accent-color);
+
+        color: var(--text-color);
+        text-decoration: none;
+        font-family: "Orbitron", sans-serif;
+        font-size: 0.95rem;
+        letter-spacing: 1px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        backdrop-filter: blur(10px);
+      }
+
+      /* DESTAQUE NO HOVER (APENAS NAS CAIXAS) */
+      .discovery-btn:hover {
+        background: rgba(0, 243, 255, 0.05);
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        transform: translateX(15px);
+
+        /* BRILHO EXTERNO ACENDE NO MOUSE OVER */
+        box-shadow:
+          0 0 25px rgba(0, 243, 255, 0.2),
+          inset 0 0 10px rgba(0, 243, 255, 0.05);
+      }
+      /* === SETINHAS NEON SEMPRE ATIVAS (PARTIÇÃO 3) === */
+      .arrow-icon {
+        font-size: 1.2rem;
+        color: var(--accent-color); /* Ciano Neon */
+        opacity: 1; /* Removida a transparência para brilho total */
+        transition: all 0.3s ease;
+        /* LED SEMPRE ACESO: Brilho constante */
+        text-shadow:
+          0 0 8px var(--accent-color),
+          0 0 15px rgba(0, 243, 255, 0.5);
+      }
+
+      /* No hover, ela apenas ganha o movimento e um pequeno pico de luz */
+      .discovery-btn:hover .arrow-icon {
+        transform: translate(5px, -5px);
+        text-shadow:
+          0 0 12px var(--accent-color),
+          0 0 25px rgba(0, 243, 255, 0.8);
+      }
+
+      /* GARANTINDO QUE O TEXTO DA DIREITA ESTEJA LIMPO */
+      /* === PARTIÇÃO 3: NEON LINEAR E LIMPO === */
+      .tech-content-curiosity {
+        text-align: right;
+        padding-right: 3rem;
+        position: relative;
+        /* Removido qualquer contorno ou box-shadow de bloco */
+        border: none;
+      }
+
+      /* A BARRA NEON QUE VOCÊ GOSTOU (FIXA AO LADO DO TEXTO) */
+      .tech-content-curiosity::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 6px; /* Espessura da barra */
+        height: 100%;
+        background: var(--accent-color);
+        /* Brilho Neon intenso projetado para fora */
+        box-shadow:
+          0 0 20px var(--accent-color),
+          0 0 40px rgba(0, 243, 255, 0.4);
+        border-radius: 2px;
+      }
+
+      .tech-content-curiosity h2 {
+        font-family: "Orbitron", sans-serif;
+        font-size: clamp(2.5rem, 4.5vw, 4rem);
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        color: var(--structural-color);
+        letter-spacing: 2px;
+      }
+
+      .tech-content-curiosity p {
+        font-family: "Space Mono", monospace;
+        font-size: 1.15rem;
+        max-width: 550px;
+        margin-left: auto;
+        color: #888;
+        line-height: 1.7;
+      }
+
+      .highlight-neon {
+        color: var(--accent-color);
+        text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+      }
+
+      /* === RODAPÉ (AJUSTADO) === */
       footer {
         background: #080808;
-        padding: 4rem 5%;
+        padding: 1.5rem 5%;
         border-top: 1px solid rgba(255, 255, 255, 0.15);
-        font-size: 0.9rem;
+        font-size: 1.1rem;
       }
       .footer-container {
         max-width: 1200px;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1.2fr 1fr;
         gap: 2rem;
-        margin-bottom: 3rem;
+        align-items: start;
       }
       .footer-col h4 {
         color: var(--structural-color);
         margin-bottom: 1.5rem;
-        font-size: 0.9rem;
+        font-size: 1.1rem;
         letter-spacing: 1px;
+      }
+      /* NOVO ALINHAMENTO SOLICITADO */
+      .center-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .center-col .nav-block {
+        width: 100%;
+        text-align: center; /* Centralizado */
+      }
+      .right-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .right-col .nav-block {
+        text-align: right; /* Direita para esquerda */
+        width: 100%;
       }
       .contact-list {
         display: flex;
         flex-direction: column;
         gap: 12px;
       }
-      .contact-link {
+      /* === PADRONIZAÇÃO DE FONTES DO RODAPÉ === */
+
+      /* Base: Links de Contato e Navegação */
+      .contact-link,
+      .nav-link {
         display: flex;
         align-items: center;
         gap: 10px;
-        color: var(--footer-text);
+        color: var(--text-color);
         text-decoration: none;
-        font-size: 0.85rem;
+        transition: all 0.3s ease;
+
+        /* PADRÃO "NAVEGAÇÃO" SOLICITADO */
+        font-family: "Space Mono", monospace;
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      /* Ajuste específico para os SVGs acompanharem a fonte */
+      .contact-link svg {
+        width: 16px; /* Reduzi levemente para equilibrar com o Space Mono */
+        height: 16px;
+        fill: var(--text-color);
         transition: all 0.3s ease;
       }
-      .contact-link svg {
-        width: 18px;
-        height: 18px;
-        fill: var(--footer-text);
-        transition: fill 0.3s ease;
+
+      /* Hover Unificado */
+      .contact-link:hover,
+      .nav-link:hover {
+        color: var(--accent-color);
       }
-      .contact-link:hover {
-        color: var(--structural-color);
-      }
+
       .contact-link:hover svg {
         fill: var(--accent-color);
+        filter: drop-shadow(0 0 5px var(--accent-color));
       }
       .nav-link {
         display: block;
         color: var(--footer-text);
         text-decoration: none;
         margin-bottom: 0.8rem;
-        transition: all 0.3s;
-        font-size: 0.85rem;
+        transition: 0.3s;
+        font-size: 1.05rem;
       }
       .nav-link:hover {
         color: var(--accent-color);
       }
       .footer-bottom {
         max-width: 1200px;
-        margin: 0 auto;
-        padding-top: 2rem;
+        margin: 1.5rem auto 0;
+        padding-top: 1rem;
         border-top: 1px solid #1a1a1a;
         text-align: center;
         opacity: 0.6;
-        font-size: 0.75rem;
+        font-size: 0.95rem;
       }
       .system-status {
         color: var(--accent-color);
@@ -642,7 +821,7 @@
         margin-top: 10px;
       }
 
-      /* Modal */
+      /* Modal Logo */
       .image-modal-overlay {
         position: fixed;
         top: 0;
@@ -654,7 +833,7 @@
         z-index: 2000;
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.3s ease;
+        transition: 0.3s;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -663,48 +842,62 @@
         opacity: 1;
         pointer-events: all;
       }
+      /* Estilo do Modal - Efeito Tela Cheia Imersivo */
       .modal-image-clone {
         position: fixed;
-        transition: all 0.5s ease-in-out;
+        /* Transição Suave e Progressiva */
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 2001;
         filter: invert(1);
         transform-origin: center center;
+        object-fit: contain; /* Mantém a proporção da logo */
       }
+
       .modal-image-clone.centered {
         top: 50% !important;
         left: 50% !important;
+        /* Transform: centraliza e aumenta para ocupar a largura quase total */
         transform: translate(-50%, -50%) scale(1) !important;
-        width: auto !important;
-        height: auto !important;
-        max-width: 80vw;
-        max-height: 80vh;
+
+        /* LARGURA AMPLIADA: OCUPA 95% DA TELA HORIZONTALMENTE */
+        width: 95vw !important;
+        height: 85vh !important; /* Altura um pouco menor para dar respiro */
+
+        max-width: 1400px; /* Limite para não pixelar em telas Ultra-Wide */
       }
 
       @media (max-width: 1100px) {
         .product-card {
           min-width: calc(50% - 1rem);
         }
-        .hero-grid {
+        .hero-grid,
+        .tech-authority-section,
+        .footer-container {
           grid-template-columns: 1fr;
           text-align: center;
         }
         .hero-content h1 {
-          border-left: none;
-          padding-left: 0;
+          font-size: clamp(2.8rem, 5.5vw, 4.4rem);
+          line-height: 1.1;
+          margin-bottom: 1.8rem;
+          border-left: 6px solid var(--accent-color); /* Espessura padronizada */
+          padding-left: 2rem;
+          /* EFEITO IRRADIAÇÃO ATIVADO */
+          box-shadow: -15px 0 30px -10px rgba(0, 243, 255, 0.8);
         }
-        .tech-authority-section {
-          grid-template-columns: 1fr;
+        .discovery-terminal {
+          align-items: center;
         }
-        .tech-content {
-          text-align: center;
+        .tech-content-curiosity {
           border-right: none;
-          border-top: 4px solid var(--accent-color);
-          padding: 2rem 0 0 0;
-          margin-left: auto;
-          margin-right: auto;
+          border-top: 5px solid var(--accent-color);
+          padding: 2rem 0;
+          text-align: center;
         }
-        .blueprint-specs {
-          grid-template-columns: 1fr;
+        .center-col,
+        .right-col {
+          text-align: center;
+          align-items: center;
         }
       }
     </style>
@@ -732,7 +925,7 @@
       <nav>
         <a href="#hero">Início</a>
         <a href="#solucoes">Integração</a>
-        <a href="#demonstracao">Demonstração</a>
+        <a href="#descoberta">Curiosidade</a>
         <a href="#contato">Contato</a>
       </nav>
     </header>
@@ -783,79 +976,186 @@
         <button class="slider-nav nav-next" onclick="moveSlider(1)">›</button>
         <div class="tesla-slider" id="mainSlider">
           <div class="product-card">
-            <div class="card-img-placeholder"></div>
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Cadeira.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.3"
+                camera-orbit="45deg 55deg auto"
+              ></model-viewer>
+            </div>
             <div class="card-content">
-              <h3>Varejo de Móveis</h3>
+              <h3>VAREJO DE MÓVEIS</h3>
               <p>
-                Teste sofás e mesas no ambiente real com precisão milimétrica.
+                Possibilite que seu cliente teste sofás e mesas no ambiente real
+                com precisão milimétrica.
               </p>
             </div>
           </div>
           <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Eletrodomésticos</h3>
-              <p>Visualize refrigeradores e fogões na sua cozinha planejada.</p>
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Cocktop.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.2"
+                camera-orbit="45deg 55deg auto"
+              ></model-viewer>
             </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
             <div class="card-content">
-              <h3>Decoração Premium</h3>
-              <p>Luminárias e quadros projetados com fidelidade de luz.</p>
-            </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Ativos Industriais</h3>
-              <p>Posicionamento de máquinas e painéis em plantas fabris.</p>
-            </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Joias & Relógios</h3>
-              <p>A interatividade que gera desejo com realismo fotográfico.</p>
-            </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Gadgets & Tech</h3>
+              <h3>APARELHOS DOMÉSTICOS</h3>
               <p>
-                Hardware exposto em 360°. Entenda a ergonomia de dispositivos.
+                Integre a visualização técnica de refrigeradores e fogões
+                diretamente na cozinha do usuário.
               </p>
             </div>
           </div>
           <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Hobbies & Arte</h3>
-              <p>Action figures ganham vida na sua estante antes da compra.</p>
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Luminária.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.3"
+              ></model-viewer>
             </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
             <div class="card-content">
-              <h3>Design de Embalagem</h3>
-              <p>Validação de PDV e presença de prateleira para marketing.</p>
-            </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Equipamentos Fitness</h3>
-              <p>Valide o espaço para esteiras em ambientes residenciais.</p>
-            </div>
-          </div>
-          <div class="product-card">
-            <div class="card-img-placeholder"></div>
-            <div class="card-content">
-              <h3>Expandindo Fronteiras</h3>
+              <h3>DECORAÇÃO PREMIUM</h3>
               <p>
-                As possibilidades são infinitas. Integre qualquer produto ao
-                WebAR.
+                Transforme luminárias e quadros em ativos digitais projetados
+                com fidelidade de luz.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Anel.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.7"
+              ></model-viewer>
+            </div>
+            <div class="card-content">
+              <h3>JOIAS & RELÓGIOS</h3>
+              <p>
+                Gere desejo através da interatividade 360° com realismo
+                fotográfico de materiais preciosos.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="PonteH.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.5"
+                camera-orbit="45deg 55deg auto"
+              ></model-viewer>
+            </div>
+            <div class="card-content">
+              <h3>GADGETS & TECH</h3>
+              <p>
+                Exponha hardware complexo para análise de ergonomia e detalhes
+                técnicos via WebAR.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Cavalo.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.5"
+                camera-orbit="45deg 55deg auto"
+              ></model-viewer>
+            </div>
+            <div class="card-content">
+              <h3>HOBBIES & ARTE</h3>
+              <p>
+                Dê vida a action figures e colecionáveis na estante do comprador
+                antes da conversão final.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Embalagem.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.8"
+              ></model-viewer>
+            </div>
+            <div class="card-content">
+              <h3>DESIGN DE EMBALAGEM</h3>
+              <p>
+                Valide a presença de prateleira e pontos de venda (PDV) através
+                de protótipos digitais.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="BraçoArticulado.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.5"
+                camera-orbit="180deg 80deg auto"
+              ></model-viewer>
+            </div>
+            <div class="card-content">
+              <h3>ATIVOS INDUSTRIAIS</h3>
+              <p>
+                Integre o posicionamento de máquinas e painéis técnicos em
+                plantas fabris complexas.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <model-viewer
+                src="Dumbell.glb"
+                loading="lazy"
+                auto-rotate
+                camera-controls
+                exposure="0.4"
+                camera-orbit="-45deg 55deg auto"
+              ></model-viewer>
+            </div>
+            <div class="card-content">
+              <h3>EQUIPAMENTOS FITNESS</h3>
+              <p>
+                Permita a validação de espaço para esteiras e ativos fitness em
+                ambientes residenciais.
+              </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="card-img-placeholder">
+              <div class="ellipsis-container">
+                <div class="ellipsis-dot"></div>
+                <div class="ellipsis-dot"></div>
+                <div class="ellipsis-dot"></div>
+              </div>
+            </div>
+            <div class="card-content">
+              <h3>EXPANDINDO FRONTEIRAS</h3>
+              <p>
+                As possibilidades são infinitas. Integre qualquer ativo ou visão
+                técnica à nossa WebAR.
               </p>
             </div>
           </div>
@@ -863,62 +1163,33 @@
       </div>
     </section>
 
-    <section class="tech-authority-section" id="demonstracao">
-      <div
-        class="model-display-container"
-        style="
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 30px;
-          background: #ffffff;
-        "
-      >
-        <h3
-          style="
-            color: #1a1a1a;
-            font-family: &quot;Orbitron&quot;, sans-serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            border-left: 6px solid var(--accent-color);
-            padding-left: 15px;
-            text-transform: uppercase;
-          "
-        >
-          ESCRIVANINHA
-        </h3>
-        <model-viewer
-          src="Mesa.glb"
-          alt="Visualizador Técnico Animus Integra"
-          camera-controls
-          auto-rotate
-          shadow-intensity="1"
-          environment-image="neutral"
-          exposure="0.1"
-          shadow-softness="1"
-        >
-        </model-viewer>
+    <section class="tech-authority-section" id="descoberta">
+      <div class="discovery-terminal">
+        <a href="PorQueInvestirNoInvisível.html" class="discovery-btn">
+          <span>Por que investir no invisível?</span>
+          <span class="arrow-icon">↗</span>
+        </a>
+        <a href="OVerdadeiroObjetivo.html" class="discovery-btn">
+          <span>O verdadeiro objetivo da Animus Integra</span>
+          <span class="arrow-icon">↗</span>
+        </a>
+        <a href="ComoIssoMuda.html" class="discovery-btn">
+          <span>Como isso muda a forma que consumimos?</span>
+          <span class="arrow-icon">↗</span>
+        </a>
       </div>
-      <div class="tech-content">
-        <h2>A RIGOR DO DESIGN<br />PARAMÉTRICO</h2>
+
+      <div class="tech-content-curiosity">
+        <h2>
+          ALÉM DA<br />SUPERFÍCIE<br /><span class="highlight-neon"
+            >DIGITAL</span
+          >
+        </h2>
         <p>
-          O que você visualiza ao lado é a transposição exata de um ambiente de
-          engenharia para a interface web. Cada componente é desenvolvido sob o
-          rigor do <strong>Autodesk Fusion 360</strong>, garantindo que a
-          volumetria e a montagem digital respeitem as restrições físicas antes
-          de qualquer&nbsp;materialização.
+          Percebeu que não estamos apenas criando modelos 3D? Há uma razão
+          estratégica para fundirmos a
+          <span class="highlight-neon">engenharia</span> com a web.
         </p>
-        <div class="blueprint-specs">
-          <div class="spec-item">
-            <span>PROTOTIPAGEM</span>
-            Autodesk Fusion 360
-          </div>
-          <div class="spec-item">
-            <span>FLUXO TÉCNICO</span>
-            Modelagem Paramétrica
-          </div>
-        </div>
       </div>
     </section>
 
@@ -940,11 +1211,14 @@
               class="contact-link"
               ><svg viewBox="0 0 24 24">
                 <path
-                  d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"
+                  d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"
                 /></svg
               ><span>Instagram Oficial</span></a
             >
-            <a href="#" target="_blank" class="contact-link"
+            <a
+              href="https://www.linkedin.com/company/animus-integra/"
+              target="_blank"
+              class="contact-link"
               ><svg viewBox="0 0 24 24">
                 <path
                   d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
@@ -956,17 +1230,17 @@
         <div class="footer-col center-col">
           <div class="nav-block">
             <h4>NAVEGAÇÃO</h4>
-            <a href="#hero" class="nav-link">Home</a
-            ><a href="#" class="nav-link">Cases & Atuação</a
-            ><a href="#contato" class="nav-link">Sobre nós</a>
+            <a href="#hero" class="nav-link">Home</a>
+            <a href="#" class="nav-link">Cases & Atuação</a>
+            <a href="#contato" class="nav-link">Sobre nós</a>
           </div>
         </div>
         <div class="footer-col right-col">
           <div class="nav-block">
             <h4>SUPORTE TÉCNICO</h4>
-            <a href="#" class="nav-link">Acesso ao Portal</a
-            ><a href="#" class="nav-link">Documentação WebAR</a
-            ><a href="#" class="nav-link">Termos de Serviço</a>
+            <a href="#" class="nav-link">Acesso ao Portal</a>
+            <a href="#" class="nav-link">Documentação WebAR</a>
+            <a href="#" class="nav-link">Termos de Serviço</a>
           </div>
         </div>
       </div>
@@ -1001,16 +1275,13 @@
           slider.style.transform = `translateX(-${cardWidth * 5}px)`;
           setTimeout(() => {
             slider.style.transition = "none";
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 5; i++)
               slider.appendChild(slider.firstElementChild);
-            }
             slider.style.transform = `translateX(0)`;
           }, 600);
         } else {
           slider.style.transition = "none";
-          for (let i = 0; i < 5; i++) {
-            slider.prepend(slider.lastElementChild);
-          }
+          for (let i = 0; i < 5; i++) slider.prepend(slider.lastElementChild);
           slider.style.transform = `translateX(-${cardWidth * 5}px)`;
           setTimeout(() => {
             slider.style.transition =
@@ -1021,36 +1292,52 @@
       }
 
       let clone = null;
+
       function openLogoModal() {
         const originalLogo = document.getElementById("header-logo-img");
         const modal = document.getElementById("logo-modal");
         const rect = originalLogo.getBoundingClientRect();
+
         clone = document.createElement("img");
         clone.classList.add("modal-image-clone");
         clone.src = originalLogo.src;
+
+        // Define a posição inicial idêntica à posição atual no header
         clone.style.top = `${rect.top}px`;
         clone.style.left = `${rect.left}px`;
         clone.style.width = `${rect.width}px`;
         clone.style.height = `${rect.height}px`;
+
         modal.appendChild(clone);
         modal.classList.add("active");
+
+        // Força o navegador a processar a posição inicial antes de animar
         requestAnimationFrame(() => {
-          clone.src = "AnimusIntegra.png";
-          clone.classList.add("centered");
+          requestAnimationFrame(() => {
+            clone.src = "AnimusIntegra.png"; // Troca para a logo completa
+            clone.classList.add("centered");
+          });
         });
       }
+
       function closeLogoModal() {
         const modal = document.getElementById("logo-modal");
         if (!clone) return;
+
         const originalLogo = document.getElementById("header-logo-img");
         const rect = originalLogo.getBoundingClientRect();
+
         clone.classList.remove("centered");
-        clone.src = "LogoSemNome.png";
+        clone.src = "LogoSemNome.png"; // Volta para a logo minimalista
+
+        // Retorna para o local de origem
         clone.style.top = `${rect.top}px`;
         clone.style.left = `${rect.left}px`;
         clone.style.width = `${rect.width}px`;
         clone.style.height = `${rect.height}px`;
+
         modal.classList.remove("active");
+
         setTimeout(() => {
           if (clone && modal.contains(clone)) {
             modal.removeChild(clone);
@@ -1058,6 +1345,12 @@
           }
         }, 500);
       }
+
+      document.querySelectorAll("model-viewer").forEach((viewer) => {
+        viewer.addEventListener("mousedown", () =>
+          viewer.setAttribute("interaction-prompt", "none"),
+        );
+      });
     </script>
   </body>
 </html>
