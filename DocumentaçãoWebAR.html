@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentação WebAR | Animus Integra</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      /* === FONTES EXATAS === */
+      @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap");
+
+      /* === VARIÁVEIS GLOBAIS === */
+      :root {
+        --bg-color: #050505;
+        --text-color: #e0e0e0;
+        --accent-color: #00f3ff;
+        --structural-color: #ffffff;
+        --grid-color: rgba(0, 243, 255, 0.3);
+        --neon-glow: 0 0 15px var(--accent-color), 0 0 30px rgba(0, 243, 255, 0.4);
+        --glass-bg: rgba(15, 15, 15, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.05);
+      }
+
+      /* === RESET E FUNDO === */
+      * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: "Space Mono", monospace;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+        background-size: 40px 40px; z-index: -2; pointer-events: none; opacity: 0.3;
+      }
+      body::after {
+        content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at center, transparent 0%, rgba(5, 5, 5, 0.4) 40%, rgba(0, 0, 0, 0.9) 90%);
+        z-index: -1; pointer-events: none;
+      }
+      strong { color: var(--accent-color); font-weight: 700; text-shadow: 0 0 8px rgba(0, 243, 255, 0.3); }
+
+      /* === CABEÇALHO === */
+      header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 1.5rem 5%; border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(10px);
+        position: fixed; width: 100%; top: 0; z-index: 1000;
+      }
+      .header-left-group { display: flex; align-items: center; gap: 15px; }
+      .brand-home-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px; }
+      .logo-container {
+        border: 1px solid #fff; background-color: #000; width: 48px; height: 48px; padding: 5px;
+        display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.5s;
+      }
+      .logo-container:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); border-color: var(--accent-color); }
+      #header-logo-img { width: 100%; height: 100%; object-fit: contain; filter: invert(1); }
+      .brand-text { font-family: "Orbitron", sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--structural-color); }
+      nav { display: flex; gap: 15px; align-items: center; }
+      nav a { color: var(--text-color); text-decoration: none; margin-left: 1.5rem; text-transform: uppercase; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; font-family: "Orbitron", sans-serif; transition: 0.3s; }
+      nav a:hover, .nav-btn-contact:hover { color: var(--accent-color); }
+
+      /* === ESTILOS DA PÁGINA DOCS === */
+      .page-container { max-width: 1200px; margin: 180px auto 100px; padding: 0 5%; }
+      .manifesto-header { margin-bottom: 4rem; }
+      .manifesto-label { font-family: "Space Mono"; color: var(--accent-color); font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 1rem; }
+      .manifesto-title { font-family: "Orbitron"; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; color: var(--structural-color); text-transform: uppercase; }
+      
+      .benefit-card { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 3rem; backdrop-filter: blur(10px); }
+      .benefit-card h2 { font-family: "Orbitron"; font-size: 1.8rem; color: var(--structural-color); margin-bottom: 1rem; }
+      .benefit-card p { font-size: 1.1rem; color: #b3b3b3; line-height: 1.8; }
+      
+      .code-block { background: #000; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 2rem; overflow-x: auto; border-left: 3px solid var(--accent-color); }
+      .code-block pre { color: var(--accent-color); font-size: 0.95rem; font-family: "Space Mono", monospace; }
+
+      /* === RODAPÉ E TOAST === */
+      footer { background: #080808; padding: 1.5rem 5%; border-top: 1px solid rgba(255, 255, 255, 0.15); font-size: 1.1rem; margin-top: 6rem; }
+      .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 2rem; align-items: start; }
+      .footer-col h4 { color: var(--structural-color); margin-bottom: 1.5rem; font-size: 1.1rem; letter-spacing: 1px; font-family: "Orbitron", sans-serif; }
+      .center-col { display: flex; flex-direction: column; align-items: center; }
+      .center-col .nav-block { width: 100%; text-align: center; }
+      .right-col { display: flex; flex-direction: column; align-items: flex-end; }
+      .right-col .nav-block { text-align: right; width: 100%; }
+      .contact-list { display: flex; flex-direction: column; gap: 12px; }
+      .contact-link, .nav-link { display: flex; align-items: center; gap: 10px; color: var(--text-color); text-decoration: none; transition: all 0.3s ease; font-family: "Space Mono", monospace; font-size: 1.05rem; }
+      .contact-link svg { width: 16px; height: 16px; fill: var(--text-color); transition: all 0.3s; }
+      .contact-link:hover, .nav-link:hover { color: var(--accent-color); }
+      .contact-link:hover svg { fill: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
+      .footer-bottom { max-width: 1200px; margin: 1.5rem auto 0; padding-top: 1rem; border-top: 1px solid #1a1a1a; text-align: center; opacity: 0.6; font-size: 0.95rem; font-family: "Space Mono", monospace; }
+      .system-status { color: var(--accent-color); font-weight: bold; font-family: "Space Mono"; letter-spacing: 1px; display: block; margin-top: 10px; }
+
+      .copy-toast { position: fixed; background: rgba(0, 0, 0, 0.9); border: 1px solid var(--accent-color); color: var(--accent-color); font-family: "Space Mono", monospace; font-size: 0.85rem; padding: 8px 16px; pointer-events: none; z-index: 9999; box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+      .copy-toast.show { opacity: 1; transform: translateY(0); }
+
+      /* Modal */
+      .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; display: flex; justify-content: center; align-items: center; }
+      .image-modal-overlay.active { opacity: 1; pointer-events: all; }
+      .modal-image-clone { position: fixed; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2001; filter: invert(1); object-fit: contain; }
+      .modal-image-clone.centered { top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) scale(1) !important; width: 95vw !important; height: 85vh !important; max-width: 1400px; }
+
+      @media (max-width: 1024px) {
+        .page-container { margin-top: 140px; }
+        .footer-container { grid-template-columns: 1fr; text-align: center; }
+        .center-col, .right-col { align-items: center; }
+        .center-col .nav-block, .right-col .nav-block { text-align: center; }
+        .contact-link { justify-content: center; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="index.html" class="brand-home-link">
+        <div class="header-left-group">
+          <div class="logo-container" onclick="event.preventDefault(); event.stopPropagation(); openLogoModal();">
+            <img src="LogoSemNome.png" alt="Animus Integra" id="header-logo-img" />
+          </div>
+          <span class="brand-text">Animus Integra</span>
+        </div>
+      </a>
+      <nav>
+        <a href="index.html">Início</a>
+        <a href="CasesEAtuação.html">Cases</a>
+        <a href="SobreNós.html">Sobre</a>
+        <a href="#contato" class="nav-btn-contact">CONTATO</a>
+      </nav>
+    </header>
+
+    <main class="page-container">
+      <div class="manifesto-header">
+        <span class="manifesto-label">// DEV_DOCS v1.0</span>
+        <h1 class="manifesto-title">Integração Iframe.</h1>
+      </div>
+
+      <div class="benefit-card">
+        <h2>Implementação Sandbox (Exemplo Pfannenberg)</h2>
+        <p>A segurança da infraestrutura do cliente é inegociável. A injeção da nossa tecnologia é feita via <code>&lt;iframe&gt;</code> isolado ou CNAME, garantindo zero interferência no código nativo (como WordPress, Shopify ou VTEX).</p>
+        
+        <div class="code-block">
+          <pre>
+&lt;!-- Exemplo de injeção direta no site do cliente --&gt;
+&lt;iframe 
+  src="https://cliente.animusintegra.com.br/modelo-01" 
+  width="100%" 
+  height="600px" 
+  style="border: none;" 
+  allow="xr-spatial-tracking; autoplay; fullscreen"&gt;
+&lt;/iframe&gt;</pre>
+        </div>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: #888;">
+          *A biblioteca @google/model-viewer já é compilada e otimizada diretamente do nosso lado do servidor via Vercel.
+        </p>
+      </div>
+    </main>
+
+    <footer id="contato">
+      <div class="footer-container">
+        <div class="footer-col">
+          <h4>ANIMUS INTEGRA</h4>
+          <div class="contact-list">
+            <a href="#" onclick="copyToClipboard(event, 'contato@animusintegra.com')" class="contact-link">
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              <span>contato@animusintegra.com</span>
+            </a>
+            <a href="https://www.instagram.com/animusintegra/" target="_blank" class="contact-link">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07M12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>Instagram Oficial</span>
+            </a>
+          </div>
+        </div>
+        <div class="footer-col center-col">
+          <div class="nav-block">
+            <h4>NAVEGAÇÃO</h4>
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="CasesEAtuação.html" class="nav-link">Cases & Atuação</a>
+            <a href="SobreNós.html" class="nav-link">Sobre nós</a>
+          </div>
+        </div>
+        <div class="footer-col right-col">
+          <div class="nav-block">
+            <h4>SUPORTE TÉCNICO</h4>
+            <a href="#" onclick="copyToClipboard(event, 'suporte@animusintegra.com')" class="contact-link" style="justify-content: flex-end; margin-bottom: 0.8rem;">
+              <span>suporte@animusintegra.com</span>
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+            <a href="DocumentaçãoWebAR.html" class="nav-link">Documentação WebAR</a>
+            <a href="TermosDeServiço.html" class="nav-link">Termos de Serviço</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>ANIMUS INTEGRA © 2026. Tecnologia guiada pela precisão.</div>
+        <span class="system-status">[ SYSTEM STATUS: ONLINE ]</span>
+      </div>
+    </footer>
+
+    <div class="image-modal-overlay" id="logo-modal" onclick="closeLogoModal()"></div>
+
+    <script>
+      let clone = null;
+      function openLogoModal() {
+        const originalLogo = document.getElementById("header-logo-img");
+        const modal = document.getElementById("logo-modal");
+        const rect = originalLogo.getBoundingClientRect();
+        clone = document.createElement("img");
+        clone.classList.add("modal-image-clone");
+        clone.src = originalLogo.src;
+        clone.style.top = `${rect.top}px`; clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`; clone.style.height = `${rect.height}px`;
+        modal.appendChild(clone);
+        modal.classList.add("active");
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            clone.src = "AnimusIntegra.png";
+            clone.classList.add("centered");
+          });
+        });
+      }
+      function closeLogoModal() {
+        const modal = document.getElementById("logo-modal");
+        if (!clone) return;
+        const originalLogo = document.getElementById("header-logo-img");
+        const rect = originalLogo.getBoundingClientRect();
+        clone.classList.remove("centered");
+        clone.src = "LogoSemNome.png";
+        clone.style.top = `${rect.top}px`; clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`; clone.style.height = `${rect.height}px`;
+        modal.classList.remove("active");
+        setTimeout(() => { if (clone && modal.contains(clone)) { modal.removeChild(clone); clone = null; } }, 500);
+      }
+
+      let toastTimeout;
+      function copyToClipboard(event, text) {
+        event.preventDefault();
+        navigator.clipboard.writeText(text).then(() => {
+          let toast = document.getElementById('copy-toast-msg');
+          if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'copy-toast-msg';
+            toast.className = 'copy-toast';
+            toast.innerText = 'Copiado para a área de transferência!';
+            document.body.appendChild(toast);
+          }
+          toast.style.left = (event.clientX + 15) + 'px';
+          toast.style.top = (event.clientY + 15) + 'px';
+          toast.classList.add('show');
+          clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        });
+      }
+    </script>
+  </body>
+</html>

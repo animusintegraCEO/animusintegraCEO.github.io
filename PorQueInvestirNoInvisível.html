@@ -40,6 +40,27 @@
         overflow-x: hidden;
       }
 
+      /* === FEEDBACK DE CÓPIA (TOAST) === */
+      .copy-toast {
+        position: fixed;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        font-family: "Space Mono", monospace;
+        font-size: 0.85rem;
+        padding: 8px 16px;
+        pointer-events: none;
+        z-index: 9999;
+        box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease;
+      }
+      .copy-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
       /* === BACKGROUND ESTÁTICO (SINAL ESTÁVEL) === */
       body::before {
         content: "";
@@ -292,6 +313,13 @@
           transform: translateY(-12px);
         }
       }
+
+      .bento-card.span-4 h3 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; /* Se o título for gigante, ele coloca "..." em vez de quebrar */
+      font-size: 1.2rem; /* Ajuste esse valor conforme o seu gosto visual */
+}
 
       /* Ajuste na Partição 3: LED no Topo */
       #futuro .bento-card.span-8 {
@@ -630,7 +658,7 @@
         <a href="#cliente">O Cliente</a>
         <a href="#animus">A Animus</a>
         <a href="#futuro">O Futuro</a>
-        <a href="index.html" class="nav-btn-back">[ VOLTAR ]</a>
+        <a href="#contato" class="nav-btn-contact">CONTATO</a>
       </nav>
     </header>
 
@@ -665,23 +693,25 @@
       <div class="bento-grid">
         <div class="bento-card span-8">
           <div class="led-indicator"></div>
-          <h2>A Intenção da Malha</h2>
+          <h2>A Integridade do Ativo Digital</h2>
           <p>
-            A <strong>Animus Integra</strong> não existe para desenhar "objetos
-            bonitinhos". Nós lidamos com o rigor técnico. Investimos
-            massivamente em tecnologia porque entendemos a complexidade de
-            manter a integridade de um projeto de engenharia na transição para a
-            web.
+            A <strong>Animus Integra</strong> opera no limite entre a precisão técnica e a 
+            acessibilidade digital. Nosso foco não é a mera representação
+            estética, mas o rigor dos dados. Compreendemos a complexidade
+            de transpor a fidelidade de projetos industriais para a web,
+            mantendo cada milímetro de precisão que a engenharia exige.
           </p>
+
           <div class="hud-graphics">
             <span class="hud-label">DADOS ESTRUTURAIS</span>
             <div class="corner c-tl"></div>
             <div class="corner c-tr"></div>
             <div class="corner c-bl"></div>
             <div class="corner c-br"></div>
-            <div class="placeholder-img-text">
-              GRÁFICO DE WIREFRAME / MALHA 3D AQUI
-            </div>
+
+            <img src="Elefante.webp" alt="Visualização de Ativo" 
+            style="width: 100%; height: 100%; object-fit: cover; opacity: 0.8;">
+
           </div>
         </div>
 
@@ -691,13 +721,12 @@
         >
           <h3>Engenharia Oculta</h3>
           <p>
-            Nosso trabalho — que ninguém vê — é garantir que arquivos gerados em
-            <strong>Autodesk Fusion 360</strong> rodem sem atritos no celular do
-            usuário final.
-          </p>
+            Nossa infraestrutura foi desenhada para processar dados brutos das principais
+            plataformas de engenharia e design do mercado.
           <p>
-            Nós otimizamos o código e a geometria para que a sua marca entregue
-            <strong>interatividade fluida e pura.</strong>
+            Otimizamos geometrias complexas para garantir que a transição entre o 
+            ativo e o dispositivo do usuário final seja fluida, leve e, acima de tudo,
+            <strong>tecnicamente precisa.</strong>
           </p>
         </div>
       </div>
@@ -711,13 +740,14 @@
         >
           <h3>O Fim da Era Estática</h3>
           <p>
-            O mercado das galerias de fotos estagnou. Hoje, apresentar um
-            produto exige eliminar a dúvida instantaneamente.
+            A visualização baseada em imagens atingiu seu limite de conversão.
+            No cenário atual, a viabilidade de um ativo é determinada pela capacidade de eliminar a dúvida de forma 
+            <strong>imediata.</strong>
           </p>
           <p>
-            Não há melhor forma de construir confiança do que
-            <strong>colocar a solução nas mãos de quem precisa dela</strong>, em
-            tempo real.
+            Não se trata apenas de exibição, trata-se de transferir a solução para o campo de operação,
+            permitindo que o cliente valide a aplicação técnica
+            <strong>em tempo real.</strong>
           </p>
         </div>
 
@@ -730,15 +760,13 @@
             <strong>explorados e compreendidos profundamente</strong> antes do
             primeiro aperto de mão.
           </p>
-          <div class="hud-graphics" style="height: 180px">
-            <span class="hud-label">PROJEÇÃO DE INTERAÇÃO B2B</span>
+          <div class="hud-graphics" style="height: 300px">
             <div class="corner c-tl"></div>
             <div class="corner c-tr"></div>
             <div class="corner c-bl"></div>
             <div class="corner c-br"></div>
-            <div class="placeholder-img-text">
-              IMAGEM DE USUÁRIO INTERAGINDO / AR AQUI
-            </div>
+            <img src="carro.jpg" alt="Usuário Interagindo com WebAR" 
+         style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
           </div>
         </div>
       </div>
@@ -749,49 +777,42 @@
         <div class="footer-col">
           <h4>ANIMUS INTEGRA</h4>
           <div class="contact-list">
-            <a href="mailto:contato@animusintegra.com" class="contact-link"
+            <a href="#" onclick="copyToClipboard(event, 'contato@animusintegra.com')" class="contact-link"
               ><svg viewBox="0 0 24 24">
-                <path
-                  d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
-                /></svg
-              ><span>contato@animusintegra.com</span></a
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg><span>contato@animusintegra.com</span></a
             >
-            <a
-              href="https://www.instagram.com/animusintegra/"
-              target="_blank"
-              class="contact-link"
+            <a href="https://www.instagram.com/animusintegra/" target="_blank" class="contact-link"
               ><svg viewBox="0 0 24 24">
-                <path
-                  d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"
-                /></svg
-              ><span>Instagram Oficial</span></a
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07M12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+              </svg><span>Instagram Oficial</span></a
             >
-            <a
-              href="https://www.linkedin.com/company/animus-integra/"
-              target="_blank"
-              class="contact-link"
+            <a href="https://www.linkedin.com/company/animus-integra/" target="_blank" class="contact-link"
               ><svg viewBox="0 0 24 24">
-                <path
-                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
-                /></svg
-              ><span>Linkedin Oficial</span></a
+                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+              </svg><span>Linkedin Oficial</span></a
             >
           </div>
         </div>
         <div class="footer-col center-col">
           <div class="nav-block">
             <h4>NAVEGAÇÃO</h4>
-            <a href="index.html#hero" class="nav-link">Home</a>
-            <a href="#" class="nav-link">Cases & Atuação</a>
-            <a href="#contato" class="nav-link">Sobre nós</a>
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="CasesEAtuação.html" class="nav-link">Cases & Atuação</a>
+            <a href="SobreNós.html" class="nav-link">Sobre nós</a>
           </div>
         </div>
         <div class="footer-col right-col">
           <div class="nav-block">
             <h4>SUPORTE TÉCNICO</h4>
-            <a href="#" class="nav-link">Acesso ao Portal</a>
-            <a href="#" class="nav-link">Documentação WebAR</a>
-            <a href="#" class="nav-link">Termos de Serviço</a>
+            <a href="#" onclick="copyToClipboard(event, 'suporte@animusintegra.com')" class="contact-link" style="justify-content: flex-end; margin-bottom: 0.8rem;">
+              <span>suporte@animusintegra.com</span>
+              <svg viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
+            </a>
+            <a href="DocumentaçãoWebAR.html" class="nav-link">Documentação WebAR</a>
+            <a href="TermosDeServiço.html" class="nav-link">Termos de Serviço</a>
           </div>
         </div>
       </div>
@@ -856,6 +877,38 @@
           }
         }, 500);
       }
+
+      // === LÓGICA DE CÓPIA DE EMAIL ===
+      let toastTimeout;
+      function copyToClipboard(event, text) {
+        event.preventDefault(); // Evita que a página role para o topo ao clicar no link "#"
+        
+        navigator.clipboard.writeText(text).then(() => {
+          let toast = document.getElementById('copy-toast-msg');
+          
+          // Se o toast não existir ainda, cria ele
+          if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'copy-toast-msg';
+            toast.className = 'copy-toast';
+            toast.innerText = 'Copiado para a área de transferência!';
+            document.body.appendChild(toast);
+          }
+          
+          // Posiciona o balãozinho perto de onde o usuário clicou
+          toast.style.left = (event.clientX + 15) + 'px';
+          toast.style.top = (event.clientY + 15) + 'px';
+          
+          toast.classList.add('show');
+          
+          // Esconde depois de 2 segundos
+          clearTimeout(toastTimeout);
+          toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+          }, 2000);
+        });
+      }
+
     </script>
   </body>
 </html>
