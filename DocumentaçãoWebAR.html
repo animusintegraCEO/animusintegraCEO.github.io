@@ -29,6 +29,10 @@
         font-family: "Space Mono", monospace;
         line-height: 1.6;
         overflow-x: hidden;
+        /* CORREÇÃO DO RODAPÉ: Garante que a página tenha o tamanho da tela no mínimo */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
       body::before {
         content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -63,7 +67,14 @@
       nav a:hover, .nav-btn-contact:hover { color: var(--accent-color); }
 
       /* === ESTILOS DA PÁGINA DOCS === */
-      .page-container { max-width: 1200px; margin: 180px auto 100px; padding: 0 5%; }
+      .page-container { 
+        max-width: 1200px; 
+        margin: 180px auto 100px; 
+        padding: 0 5%; 
+        width: 100%;
+        /* CORREÇÃO DO RODAPÉ: Faz o conteúdo expandir e empurrar o footer */
+        flex: 1; 
+      }
       .manifesto-header { margin-bottom: 4rem; }
       .manifesto-label { font-family: "Space Mono"; color: var(--accent-color); font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; display: block; margin-bottom: 1rem; }
       .manifesto-title { font-family: "Orbitron"; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; color: var(--structural-color); text-transform: uppercase; }
@@ -75,20 +86,73 @@
       .code-block { background: #000; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.1); margin-top: 2rem; overflow-x: auto; border-left: 3px solid var(--accent-color); }
       .code-block pre { color: var(--accent-color); font-size: 0.95rem; font-family: "Space Mono", monospace; }
 
-      /* === RODAPÉ E TOAST === */
-      footer { background: #080808; padding: 1.5rem 5%; border-top: 1px solid rgba(255, 255, 255, 0.15); font-size: 1.1rem; margin-top: 6rem; }
-      .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 2rem; align-items: start; }
-      .footer-col h4 { color: var(--structural-color); margin-bottom: 1.5rem; font-size: 1.1rem; letter-spacing: 1px; font-family: "Orbitron", sans-serif; }
-      .center-col { display: flex; flex-direction: column; align-items: center; }
-      .center-col .nav-block { width: 100%; text-align: center; }
-      .right-col { display: flex; flex-direction: column; align-items: flex-end; }
-      .right-col .nav-block { text-align: right; width: 100%; }
-      .contact-list { display: flex; flex-direction: column; gap: 12px; }
-      .contact-link, .nav-link { display: flex; align-items: center; gap: 10px; color: var(--text-color); text-decoration: none; transition: all 0.3s ease; font-family: "Space Mono", monospace; font-size: 1.05rem; }
-      .contact-link svg { width: 16px; height: 16px; fill: var(--text-color); transition: all 0.3s; }
-      .contact-link:hover, .nav-link:hover { color: var(--accent-color); }
-      .contact-link:hover svg { fill: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
-      .footer-bottom { max-width: 1200px; margin: 1.5rem auto 0; padding-top: 1rem; border-top: 1px solid #1a1a1a; text-align: center; opacity: 0.6; font-size: 0.95rem; font-family: "Space Mono", monospace; }
+      footer { 
+        background: #080808; 
+        padding: 3rem 5% 1.5rem; 
+        border-top: 1px solid rgba(255, 255, 255, 0.15); 
+        margin-top: auto; /* Cola no fundo */
+      }
+      .footer-container { 
+        max-width: 1200px; 
+        margin: 0 auto; 
+        display: grid; 
+        grid-template-columns: 1fr 1fr 1fr; /* 3 colunas de tamanhos idênticos */
+        gap: 2rem; 
+      }
+      
+      .footer-col { display: flex; flex-direction: column; }
+      .footer-col h4 { 
+        color: var(--structural-color); 
+        margin-bottom: 1.5rem; 
+        font-size: 1.1rem; 
+        letter-spacing: 1px; 
+        font-family: "Orbitron", sans-serif; 
+      }
+      
+      /* ALINHAMENTOS ABSOLUTOS DAS COLUNAS */
+      .col-left { align-items: flex-start; text-align: left; }
+      .col-center { align-items: center; text-align: center; }
+      .col-right { align-items: flex-end; text-align: right; }
+      
+      /* LINK ÚNICO PADRONIZADO */
+      .footer-link { 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        color: var(--text-color); 
+        text-decoration: none; 
+        transition: all 0.3s ease; 
+        font-family: "Space Mono", monospace; 
+        font-size: 1.05rem; 
+        margin-bottom: 1rem;
+        width: 100%;
+      }
+      .footer-link svg { width: 16px; height: 16px; fill: var(--text-color); transition: all 0.3s ease; flex-shrink: 0; }
+      .footer-link:hover { color: var(--accent-color); }
+      .footer-link:hover svg { fill: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
+      
+      /* FORÇA OS ITENS (ICONES + TEXTO) A OBEDECEREM A COLUNA */
+      .col-left .footer-link { justify-content: flex-start; }
+      .col-center .footer-link { justify-content: center; }
+      .col-right .footer-link { justify-content: flex-end; }
+      
+      .footer-bottom { 
+        max-width: 1200px; 
+        margin: 2rem auto 0; 
+        padding-top: 1rem; 
+        border-top: 1px solid #1a1a1a; 
+        text-align: center; 
+        opacity: 0.6; 
+        font-size: 0.95rem; 
+        font-family: "Space Mono", monospace; 
+      }
+      .system-status { color: var(--accent-color); font-weight: bold; font-family: "Space Mono"; letter-spacing: 1px; display: block; margin-top: 10px; }
+
+      @media (max-width: 1024px) {
+        .footer-container { grid-template-columns: 1fr; text-align: center; }
+        .col-left, .col-center, .col-right { align-items: center; text-align: center; }
+        .col-left .footer-link, .col-right .footer-link { justify-content: center; }
+      }
       .system-status { color: var(--accent-color); font-weight: bold; font-family: "Space Mono"; letter-spacing: 1px; display: block; margin-top: 10px; }
 
       .copy-toast { position: fixed; background: rgba(0, 0, 0, 0.9); border: 1px solid var(--accent-color); color: var(--accent-color); font-family: "Space Mono", monospace; font-size: 0.85rem; padding: 8px 16px; pointer-events: none; z-index: 9999; box-shadow: 0 0 15px rgba(0, 243, 255, 0.3); opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
@@ -120,9 +184,6 @@
         </div>
       </a>
       <nav>
-        <a href="index.html">Início</a>
-        <a href="CasesEAtuação.html">Cases</a>
-        <a href="SobreNós.html">Sobre</a>
         <a href="#contato" class="nav-btn-contact">CONTATO</a>
       </nav>
     </header>
@@ -134,8 +195,8 @@
       </div>
 
       <div class="benefit-card">
-        <h2>Implementação Sandbox (Exemplo Pfannenberg)</h2>
-        <p>A segurança da infraestrutura do cliente é inegociável. A injeção da nossa tecnologia é feita via <code>&lt;iframe&gt;</code> isolado ou CNAME, garantindo zero interferência no código nativo (como WordPress, Shopify ou VTEX).</p>
+        <h2>Implementação Sandbox</h2>
+        <p>A segurança da infraestrutura do cliente é inegociável. A injeção da nossa tecnologia é feita via <strong><code>&lt;iframe&gt;</code></strong> isolado ou CNAME, garantindo zero interferência no código nativo (como WordPress, Shopify ou VTEX).</p>
         
         <div class="code-block">
           <pre>
@@ -149,44 +210,44 @@
 &lt;/iframe&gt;</pre>
         </div>
         <p style="margin-top: 1rem; font-size: 0.9rem; color: #888;">
-          *A biblioteca @google/model-viewer já é compilada e otimizada diretamente do nosso lado do servidor via Vercel.
+          * A biblioteca já é compilada e otimizada diretamente do nosso lado do servidor via <strong>Vercel</strong>.
         </p>
       </div>
     </main>
 
-    <footer id="contato">
+   <footer id="contato">
       <div class="footer-container">
-        <div class="footer-col">
+        <div class="footer-col col-left">
           <h4>ANIMUS INTEGRA</h4>
-          <div class="contact-list">
-            <a href="#" onclick="copyToClipboard(event, 'contato@animusintegra.com')" class="contact-link">
-              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-              <span>contato@animusintegra.com</span>
-            </a>
-            <a href="https://www.instagram.com/animusintegra/" target="_blank" class="contact-link">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07M12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-              <span>Instagram Oficial</span>
-            </a>
-          </div>
+          <a href="#" onclick="copyToClipboard(event, 'contato@animusintegra.com')" class="footer-link">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <span>contato@animusintegra.com</span>
+          </a>
+          <a href="https://www.instagram.com/animusintegra/" target="_blank" class="footer-link">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07M12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            <span>Instagram Oficial</span>
+          </a>
+          <a href="https://www.linkedin.com/company/animus-integra/" target="_blank" class="footer-link">
+            <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+            <span>Linkedin Oficial</span>
+          </a>
         </div>
-        <div class="footer-col center-col">
-          <div class="nav-block">
-            <h4>NAVEGAÇÃO</h4>
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="CasesEAtuação.html" class="nav-link">Cases & Atuação</a>
-            <a href="SobreNós.html" class="nav-link">Sobre nós</a>
-          </div>
+        
+        <div class="footer-col col-center">
+          <h4>NAVEGAÇÃO</h4>
+          <a href="index.html" class="footer-link"><span>Home</span></a>
+          <a href="CasesEAtuação.html" class="footer-link"><span>Cases & Atuação</span></a>
+          <a href="SobreNós.html" class="footer-link"><span>Sobre nós</span></a>
         </div>
-        <div class="footer-col right-col">
-          <div class="nav-block">
-            <h4>SUPORTE TÉCNICO</h4>
-            <a href="#" onclick="copyToClipboard(event, 'suporte@animusintegra.com')" class="contact-link" style="justify-content: flex-end; margin-bottom: 0.8rem;">
-              <span>suporte@animusintegra.com</span>
-              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            </a>
-            <a href="DocumentaçãoWebAR.html" class="nav-link">Documentação WebAR</a>
-            <a href="TermosDeServiço.html" class="nav-link">Termos de Serviço</a>
-          </div>
+        
+        <div class="footer-col col-right">
+          <h4>SUPORTE TÉCNICO</h4>
+          <a href="#" onclick="copyToClipboard(event, 'suporte@animusintegra.com')" class="footer-link">
+            <span>suporte@animusintegra.com</span>
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </a>
+          <a href="DocumentaçãoWebAR.html" class="footer-link"><span>Documentação WebAR</span></a>
+          <a href="TermosDeServiço.html" class="footer-link"><span>Termos de Serviço</span></a>
         </div>
       </div>
       <div class="footer-bottom">
