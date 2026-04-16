@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-	<head>
+  <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Animus Integra | Immersive Tech & Automation</title>
     <script
       type="module"
@@ -72,7 +72,7 @@
         background-size: 40px 40px;
         z-index: -2;
         pointer-events: none;
-        opacity: 0.3; /* Nível fixo de visibilidade que você ajustou */
+        opacity: 0.3; 
       }
 
       /* === RESTAURAÇÃO DA VINHETA CIRCULAR (CÓDIGO TERRA) === */
@@ -83,7 +83,6 @@
         left: 0;
         width: 100%;
         height: 100%;
-        /* O segredo do 'túnel' visual: centro transparente, bordas escuras */
         background: radial-gradient(
           circle at center,
           transparent 0%,
@@ -100,38 +99,22 @@
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -2; /* Fica entre o grid (-3) e a vinheta (-1) */
+        z-index: -2; 
         pointer-events: none;
-        transition:
-          background 1.2s ease-in-out,
-          opacity 1s ease;
+        transition: background 1.2s ease-in-out, opacity 1s ease;
         opacity: 0;
       }
 
-      /* FOCO DA PARTIÇÃO 2 (Laterais) */
       body[data-active-section="solucoes"] .background-light-focus {
         opacity: 1;
         background:
-          radial-gradient(
-            circle at 0% 50%,
-            rgba(0, 243, 255, 0.2) 0%,
-            transparent 50%
-          ),
-          radial-gradient(
-            circle at 100% 50%,
-            rgba(0, 243, 255, 0.2) 0%,
-            transparent 50%
-          ) !important;
+          radial-gradient(circle at 0% 50%, rgba(0, 243, 255, 0.2) 0%, transparent 50%),
+          radial-gradient(circle at 100% 50%, rgba(0, 243, 255, 0.2) 0%, transparent 50%) !important;
       }
 
-      /* FOCO DA PARTIÇÃO 3 (Inferior) */
       body[data-active-section="descoberta"] .background-light-focus {
         opacity: 1;
-        background: radial-gradient(
-          circle at 50% 100%,
-          rgba(0, 243, 255, 0.25) 0%,
-          transparent 70%
-        ) !important;
+        background: radial-gradient(circle at 50% 100%, rgba(0, 243, 255, 0.25) 0%, transparent 70%) !important;
       }
 
       /* === CABEÇALHO === */
@@ -148,778 +131,174 @@
         top: 0;
         z-index: 1000;
       }
-      .header-left-group {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
-      .brand-home-link {
-        text-decoration: none;
-        color: inherit;
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
+      .header-left-group { display: flex; align-items: center; gap: 15px; }
+      .brand-home-link { text-decoration: none; color: inherit; display: flex; align-items: center; gap: 15px; }
       .logo-container {
-        border: 1px solid #fff;
-        background-color: #000;
-        width: 48px;
-        height: 48px;
-        padding: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: 1px solid #fff; background-color: #000; width: 48px; height: 48px; padding: 5px;
+        display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
       }
-      .logo-container:hover {
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-        border-color: var(--accent-color);
+      .logo-container:hover { box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); border-color: var(--accent-color); }
+      #header-logo-img { width: 100%; height: 100%; object-fit: contain; filter: invert(1); }
+      .brand-text { font-family: "Orbitron", sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--structural-color); transition: color 0.3s ease; }
+
+      .nav-container { display: flex; align-items: center; gap: 20px; }
+      .lang-toggle {
+        background: transparent; border: 1px solid var(--accent-color); color: var(--accent-color);
+        font-family: "Space Mono"; padding: 4px 8px; cursor: pointer; font-size: 0.8rem; transition: 0.3s;
       }
-      #header-logo-img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        filter: invert(1);
-      }
-      .brand-text {
-        font-family: "Orbitron", sans-serif;
-        font-size: 1.1rem;
-        font-weight: 700;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--structural-color);
-        transition: color 0.3s ease;
-      }
+      .lang-toggle:hover { background: var(--accent-color); color: #000; }
+
+      .mobile-menu-btn { display: none; background: transparent; border: none; color: var(--accent-color); font-size: 1.5rem; cursor: pointer; }
+
+      nav { display: flex; gap: 15px; align-items: center; transition: 0.3s ease; }
       nav a {
-        color: var(--text-color);
-        text-decoration: none;
-        margin-left: 2rem;
-        text-transform: uppercase;
-        font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 1px;
-        font-family: "Orbitron", sans-serif;
-        transition: color 0.3s;
+        color: var(--text-color); text-decoration: none; margin-left: 2rem; text-transform: uppercase; font-size: 0.8rem;
+        font-weight: 700; letter-spacing: 1px; font-family: "Orbitron", sans-serif; transition: color 0.3s;
       }
-      nav a:hover {
-        color: var(--accent-color);
-      }
+      nav a:hover { color: var(--accent-color); }
 
       /* === PARTIÇÃO 1: HERO === */
-      section.hero {
-        padding: 140px 5% 80px;
-        min-height: 90vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-      h1,
-      h2,
-      h3,
-      h4 {
-        font-family: "Orbitron", sans-serif;
-        text-transform: uppercase;
-      }
-      .hero-grid {
-        display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
-        gap: 2rem;
-        align-items: center;
-      }
+      section.hero { padding: 140px 5% 80px; min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+      h1, h2, h3, h4 { font-family: "Orbitron", sans-serif; text-transform: uppercase; }
+      .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem; align-items: center; }
       .hero-content h1 {
-        font-size: clamp(2.8rem, 5.5vw, 4.4rem);
-        line-height: 1.1;
-        margin-bottom: 1.8rem;
-        border-left: 5px solid var(--accent-color);
-        padding-left: 2rem;
-        /* ADICIONE ESTA LINHA ABAIXO */
-        /* Mantém o neon na esquerda, mas "encolhe" o brilho para não vazar em cima/baixo */
-        box-shadow: -12px 0 15px -12px var(--accent-color);
+        font-size: clamp(2.8rem, 5.5vw, 4.4rem); line-height: 1.1; margin-bottom: 1.8rem; border-left: 5px solid var(--accent-color);
+        padding-left: 2rem; box-shadow: -12px 0 15px -12px var(--accent-color);
       }
-      .hero-content p {
-        max-width: 660px;
-        margin-bottom: 1.5rem;
-        color: var(--text-color);
-        opacity: 0.9;
-        font-size: 1.2rem;
-      }
-      .brand-etymology {
-        font-size: 0.9rem;
-        color: #666;
-        margin-bottom: 2.5rem;
-        max-width: 650px;
-        line-height: 1.6;
-      }
-      .brand-etymology strong {
-        color: var(--accent-color);
-        font-family: "Orbitron", sans-serif;
-      }
+      .hero-content p { max-width: 660px; margin-bottom: 1.5rem; color: var(--text-color); opacity: 0.9; font-size: 1.2rem; }
+      .brand-etymology { font-size: 0.9rem; color: #666; margin-bottom: 2.5rem; max-width: 650px; line-height: 1.6; }
+      .brand-etymology strong { color: var(--accent-color); font-family: "Orbitron", sans-serif; }
 
-      /* === BOTÃO CTA: PRETO SÓLIDO (REPROUSO) === */
       .cta-btn {
-        display: inline-block;
-        padding: 1rem 2.5rem;
-        border: 1px solid var(--accent-color);
-        color: var(--accent-color); /* Texto ciano no preto */
+        display: inline-block; padding: 1rem 2.5rem; border: 1px solid var(--accent-color); color: var(--accent-color); background-color: #000;
+        font-family: "Orbitron", sans-serif; font-weight: bold; letter-spacing: 1px; text-decoration: none; transition: all 0.3s ease;
+      }
+      .cta-btn:hover { background-color: var(--accent-color); color: #000; box-shadow: 0 0 25px var(--accent-color); transform: translateY(-2px); }
 
-        /* ESTADO INICIAL: 100% Preto e Opaco */
-        background-color: #000;
+      /* Visual Gyro */
+      .hero-visual { display: flex; justify-content: center; align-items: center; position: relative; height: 450px; perspective: 1200px; }
+      .gyro-tech-core { width: 330px; height: 330px; position: relative; transform-style: preserve-3d; transition: transform 0.1s ease-out; }
+      .tech-ring { position: absolute; top: 50%; left: 50%; border-radius: 50%; transform: translate(-50%, -50%); border: 1.5px solid var(--accent-color); opacity: 0.6; box-shadow: 0 0 10px rgba(0, 243, 255, 0.2); }
+      .central-reactor { position: absolute; top: 50%; left: 50%; width: 66px; height: 66px; transform: translate(-50%, -50%) translateZ(0); border-radius: 50%; background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%); box-shadow: var(--neon-glow); animation: pulseReactor 2s infinite alternate; }
+      .r-outer-thick { width: 100%; height: 100%; border-width: 2px; border-left-color: transparent; border-right-color: transparent; animation: rotateStandard 20s linear infinite; opacity: 0.5; }
+      .r-mid-dashed { width: 85%; height: 85%; border: 2px dashed var(--accent-color); animation: rotateReverse 25s linear infinite; opacity: 0.4; }
+      .r-inner-dotted { width: 70%; height: 70%; border: 3px dotted var(--accent-color); animation: rotateStandard 15s linear infinite; opacity: 0.6; }
+      .r-angled-1 { width: 180px; height: 180px; transform: translate(-50%, -50%) rotateX(30deg) rotateY(300deg); }
+      .r-angled-2 { width: 180px; height: 180px; transform: translate(-50%, -50%) rotateX(-65deg) rotateY(-15deg); }
+      .data-particle { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; background: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
+      .dp-1 { animation: orbit1 8s linear infinite; }
+      .dp-2 { animation: orbit2 12s linear infinite; }
 
-        font-family: "Orbitron", sans-serif;
-        font-weight: bold;
-        letter-spacing: 1px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        box-shadow: none;
-      }
-
-      /* ESTADO HOVER: Acende o fundo com a cor neon */
-      .cta-btn:hover {
-        background-color: var(--accent-color);
-        color: #000; /* Texto preto sobre o fundo aceso */
-        box-shadow: 0 0 25px var(--accent-color);
-        transform: translateY(-2px);
-      }
-
-      /* Visual Gyro e Órbitas */
-      .hero-visual {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        height: 450px;
-        perspective: 1200px;
-      }
-      .gyro-tech-core {
-        width: 330px;
-        height: 330px;
-        position: relative;
-        transform-style: preserve-3d;
-        transition: transform 0.1s ease-out;
-      }
-      .tech-ring {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        border: 1.5px solid var(--accent-color); /* Linha mais firme */
-        opacity: 0.6; /* Mais visível */
-        box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
-      }
-      .central-reactor {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 66px;
-        height: 66px;
-        transform: translate(-50%, -50%) translateZ(0);
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          var(--accent-color) 0%,
-          transparent 70%
-        );
-        box-shadow: var(--neon-glow);
-        animation: pulseReactor 2s infinite alternate;
-      }
-      .r-outer-thick {
-        width: 100%;
-        height: 100%;
-        border-width: 2px;
-        border-left-color: transparent;
-        border-right-color: transparent;
-        animation: rotateStandard 20s linear infinite;
-        opacity: 0.5;
-      }
-      .r-mid-dashed {
-        width: 85%;
-        height: 85%;
-        border: 2px dashed var(--accent-color);
-        animation: rotateReverse 25s linear infinite;
-        opacity: 0.4;
-      }
-      .r-inner-dotted {
-        width: 70%;
-        height: 70%;
-        border: 3px dotted var(--accent-color);
-        animation: rotateStandard 15s linear infinite;
-        opacity: 0.6;
-      }
-      .r-angled-1 {
-        width: 180px;
-        height: 180px;
-        transform: translate(-50%, -50%) rotateX(30deg) rotateY(300deg);
-      }
-      .r-angled-2 {
-        width: 180px;
-        height: 180px;
-        transform: translate(-50%, -50%) rotateX(-65deg) rotateY(-15deg);
-      }
-      .data-particle {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 6px;
-        height: 6px;
-        background: var(--accent-color);
-        border-radius: 50%;
-        box-shadow: 0 0 10px var(--accent-color);
-      }
-      .dp-1 {
-        animation: orbit1 8s linear infinite;
-      }
-      .dp-2 {
-        animation: orbit2 12s linear infinite;
-      }
-
-      @keyframes pulseReactor {
-        0% {
-          opacity: 0.5;
-          transform: translate(-50%, -50%) scale(0.9);
-        }
-        100% {
-          opacity: 1;
-          transform: translate(-50%, -50%) scale(1.1);
-        }
-      }
-      @keyframes rotateStandard {
-        from {
-          transform: translate(-50%, -50%) rotateZ(0deg);
-        }
-        to {
-          transform: translate(-50%, -50%) rotateZ(360deg);
-        }
-      }
-      @keyframes rotateReverse {
-        from {
-          transform: translate(-50%, -50%) rotateZ(360deg);
-        }
-        to {
-          transform: translate(-50%, -50%) rotateZ(0deg);
-        }
-      }
-      @keyframes rotateTilt1 {
-        from {
-          transform: translate(-50%, -50%) rotateX(45deg) rotateY(0deg);
-        }
-        to {
-          transform: translate(-50%, -50%) rotateX(45deg) rotateY(360deg);
-        }
-      }
-      @keyframes rotateTilt2 {
-        from {
-          transform: translate(-50%, -50%) rotateX(-30deg) rotateY(90deg)
-            rotateZ(0deg);
-        }
-        to {
-          transform: translate(-50%, -50%) rotateX(-30deg) rotateY(90deg)
-            rotateZ(360deg);
-        }
-      }
-      @keyframes orbit1 {
-        from {
-          transform: translate(-50%, -50%) rotateZ(0deg) translateX(140px)
-            rotateZ(0deg);
-        }
-        to {
-          transform: translate(-50%, -50%) rotateZ(360deg) translateX(140px)
-            rotateZ(-360deg);
-        }
-      }
-      @keyframes orbit2 {
-        from {
-          transform: translate(-50%, -50%) rotateY(0deg) translateZ(110px);
-        }
-        to {
-          transform: translate(-50%, -50%) rotateY(360deg) translateZ(110px);
-        }
-      }
+      @keyframes pulseReactor { 0% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.9); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+      @keyframes rotateStandard { from { transform: translate(-50%, -50%) rotateZ(0deg); } to { transform: translate(-50%, -50%) rotateZ(360deg); } }
+      @keyframes rotateReverse { from { transform: translate(-50%, -50%) rotateZ(360deg); } to { transform: translate(-50%, -50%) rotateZ(0deg); } }
+      @keyframes orbit1 { from { transform: translate(-50%, -50%) rotateZ(0deg) translateX(140px) rotateZ(0deg); } to { transform: translate(-50%, -50%) rotateZ(360deg) translateX(140px) rotateZ(-360deg); } }
+      @keyframes orbit2 { from { transform: translate(-50%, -50%) rotateY(0deg) translateZ(110px); } to { transform: translate(-50%, -50%) rotateY(360deg) translateZ(110px); } }
 
       /* === PARTIÇÃO 2: SLIDER === */
-      .impact-section {
-        padding: 8rem 0;
-        display: flex;
-        flex-direction: column;
-        gap: 3.5rem;
-      }
-      .impact-header {
-        text-align: center;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 5%;
-      }
-      .impact-header h2 {
-        font-size: clamp(2rem, 4.5vw, 3.15rem);
-        margin-bottom: 0.5rem;
-        color: var(--structural-color);
-        display: inline-block;
-        position: relative;
-        max-width: 850px;
-        text-wrap: balance;
-      }
-      .impact-header h2::after {
-        content: "";
-        display: block;
-        width: 65%;
-        height: 6px; /* Ajustado para 6px */
-        background: var(--accent-color);
-        margin: 12px auto 0;
-        box-shadow:
-          0 0 20px var(--accent-color),
-          0 0 40px rgba(0, 243, 255, 0.4);
-      }
-      .impact-header p {
-        color: #888;
-        font-size: 1.15rem;
-        max-width: 800px;
-        margin: 2rem auto 0;
-        line-height: 1.6;
-      }
-      .slider-outer {
-        position: relative;
-        width: 100%;
-        padding: 0;
-        overflow: hidden;
-      }
-      .tesla-slider {
-        display: flex;
-        gap: 1.1rem;
-        padding: 3rem 6.5%;
-        transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-      }
-      .product-card {
-        min-width: calc(20% - 0.9rem);
-        height: 430px;
-        background: rgba(20, 20, 20, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        flex-direction: column;
-        transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-        position: relative;
-        overflow: hidden;
-      }
-      .product-card:hover {
-        border-color: var(--accent-color);
-        transform: scale(1.08);
-        z-index: 10;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
-      }
-      .card-img-placeholder {
-        width: 100%;
-        height: 50%;
-        background: #f0f0f0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      }
-      .card-img-placeholder model-viewer {
-        width: 100%;
-        height: 100%;
-        outline: none;
-      }
-      .card-content {
-        padding: 1.4rem;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        gap: 10px;
-      }
-      .card-content h3 {
-        font-size: 1.2rem;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .card-content p {
-        font-size: 0.85rem;
-        color: #666;
-        line-height: 1.5;
-      }
-      .slider-nav {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 6%;
-        background: rgba(0, 0, 0, 0.4);
-        border: none;
-        color: #fff;
-        font-size: 2.8rem;
-        cursor: pointer;
-        z-index: 100;
-        opacity: 0.7;
-        transition: 0.3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .slider-nav:hover {
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.85);
-        color: var(--accent-color);
-      }
-      .nav-prev {
-        left: 0;
-      }
-      .nav-next {
-        right: 0;
-      }
+      .impact-section { padding: 8rem 0; display: flex; flex-direction: column; gap: 3.5rem; }
+      .impact-header { text-align: center; max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+      .impact-header h2 { font-size: clamp(2rem, 4.5vw, 3.15rem); margin-bottom: 0.5rem; color: var(--structural-color); display: inline-block; position: relative; max-width: 850px; text-wrap: balance; }
+      .impact-header h2::after { content: ""; display: block; width: 65%; height: 6px; background: var(--accent-color); margin: 12px auto 0; box-shadow: 0 0 20px var(--accent-color), 0 0 40px rgba(0, 243, 255, 0.4); }
+      .impact-header p { color: #888; font-size: 1.15rem; max-width: 800px; margin: 2rem auto 0; line-height: 1.6; }
+      .slider-outer { position: relative; width: 100%; padding: 0; overflow: hidden; }
+      .tesla-slider { display: flex; gap: 1.1rem; padding: 3rem 6.5%; transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1); }
+      .product-card { min-width: calc(20% - 0.9rem); height: 430px; background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); position: relative; overflow: hidden; }
+      .product-card:hover { border-color: var(--accent-color); transform: scale(1.08); z-index: 10; box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9); }
+      .card-img-placeholder { width: 100%; height: 50%; background: #f0f0f0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+      .card-img-placeholder model-viewer { width: 100%; height: 100%; outline: none; }
+      .card-content { padding: 1.4rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; gap: 10px; }
+      .card-content h3 { font-size: 1.2rem; color: #fff; text-transform: uppercase; letter-spacing: 1px; }
+      .card-content p { font-size: 0.85rem; color: #666; line-height: 1.5; }
+      .slider-nav { position: absolute; top: 0; bottom: 0; width: 6%; background: rgba(0, 0, 0, 0.4); border: none; color: #fff; font-size: 2.8rem; cursor: pointer; z-index: 100; opacity: 0.7; transition: 0.3s; display: flex; align-items: center; justify-content: center; }
+      .slider-nav:hover { opacity: 1; background: rgba(0, 0, 0, 0.85); color: var(--accent-color); }
+      .nav-prev { left: 0; } .nav-next { right: 0; }
 
-      /* === ANIMAÇÃO RETICÊNCIAS (EXPANDINDO FRONTEIRAS) === */
-      .ellipsis-container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        /* Fundo já é #f0f0f0 pelo pai .card-img-placeholder */
-      }
-
-      .ellipsis-dot {
-        width: 14px;
-        height: 14px;
-        background-color: #000;
-        border-radius: 50%;
-        /* 2.5s totais: dá o 'tranco' rápido e pausa bastante no final */
-        animation: waveBounce 2.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
-      }
-
-      /* Atrasos para criar a onda perfeita */
-      .ellipsis-dot:nth-child(1) {
-        animation-delay: 0s;
-      }
-      .ellipsis-dot:nth-child(2) {
-        animation-delay: 0.15s;
-      }
-      .ellipsis-dot:nth-child(3) {
-        animation-delay: 0.3s;
-      }
-
-      /* Movimento apenas no começo da animação (0 a 25%), o resto é espera */
-      @keyframes waveBounce {
-        0%,
-        25%,
-        100% {
-          transform: translateY(0);
-        }
-        12.5% {
-          transform: translateY(-16px);
-        }
-      }
+      .ellipsis-container { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; }
+      .ellipsis-dot { width: 14px; height: 14px; background-color: #000; border-radius: 50%; animation: waveBounce 2.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite; }
+      .ellipsis-dot:nth-child(1) { animation-delay: 0s; }
+      .ellipsis-dot:nth-child(2) { animation-delay: 0.15s; }
+      .ellipsis-dot:nth-child(3) { animation-delay: 0.3s; }
+      @keyframes waveBounce { 0%, 25%, 100% { transform: translateY(0); } 12.5% { transform: translateY(-16px); } }
 
       /* === PARTIÇÃO 3: REFINAMENTO TECH === */
-      .tech-authority-section {
-        padding: 10rem 5%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 5rem;
-        align-items: center;
-        background: radial-gradient(
-          circle at 80% 50%,
-          rgba(0, 243, 255, 0.05) 0%,
-          transparent 60%
-        );
-      }
+      .tech-authority-section { padding: 10rem 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; background: radial-gradient(circle at 80% 50%, rgba(0, 243, 255, 0.05) 0%, transparent 60%); }
+      .discovery-terminal { display: flex; flex-direction: column; gap: 1.5rem; }
+      .discovery-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 580px; padding: 2rem; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05); border-left: 2px solid var(--accent-color); color: var(--text-color); text-decoration: none; font-family: "Orbitron", sans-serif; font-size: 0.95rem; letter-spacing: 1px; transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); backdrop-filter: blur(10px); }
+      .discovery-btn:hover { background: rgba(0, 243, 255, 0.05); border-color: var(--accent-color); color: var(--accent-color); transform: translateX(15px); box-shadow: 0 0 25px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.05); }
+      .arrow-icon { font-size: 1.2rem; color: var(--accent-color); transition: all 0.3s ease; text-shadow: 0 0 8px var(--accent-color), 0 0 15px rgba(0, 243, 255, 0.5); }
+      .discovery-btn:hover .arrow-icon { transform: translate(5px, -5px); text-shadow: 0 0 12px var(--accent-color), 0 0 25px rgba(0, 243, 255, 0.8); }
 
-      .discovery-terminal {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
+      .tech-content-curiosity { text-align: right; padding-right: 3rem; position: relative; border: none; }
+      .tech-content-curiosity::after { content: ""; position: absolute; right: 0; top: 0; width: 6px; height: 100%; background: var(--accent-color); box-shadow: 0 0 20px var(--accent-color), 0 0 40px rgba(0, 243, 255, 0.4); border-radius: 2px; }
+      .tech-content-curiosity h2 { font-family: "Orbitron", sans-serif; font-size: clamp(2.5rem, 4.5vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; color: var(--structural-color); letter-spacing: 2px; }
+      .tech-content-curiosity p { font-family: "Space Mono", monospace; font-size: 1.15rem; max-width: 550px; margin-left: auto; color: #888; line-height: 1.7; }
+      .highlight-neon { color: var(--accent-color); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); }
 
-      /* === CAIXAS DIRECIONÁVEIS: BARRA REFINADA === */
-      .discovery-btn {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        max-width: 580px;
-        padding: 2rem;
-        background: rgba(255, 255, 255, 0.02);
-
-        /* REDUZIDO: De 4px para 2px para um visual mais clean */
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        border-left: 2px solid var(--accent-color);
-
-        color: var(--text-color);
-        text-decoration: none;
-        font-family: "Orbitron", sans-serif;
-        font-size: 0.95rem;
-        letter-spacing: 1px;
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        backdrop-filter: blur(10px);
-      }
-
-      /* DESTAQUE NO HOVER (APENAS NAS CAIXAS) */
-      .discovery-btn:hover {
-        background: rgba(0, 243, 255, 0.05);
-        border-color: var(--accent-color);
-        color: var(--accent-color);
-        transform: translateX(15px);
-
-        /* BRILHO EXTERNO ACENDE NO MOUSE OVER */
-        box-shadow:
-          0 0 25px rgba(0, 243, 255, 0.2),
-          inset 0 0 10px rgba(0, 243, 255, 0.05);
-      }
-      /* === SETINHAS NEON SEMPRE ATIVAS (PARTIÇÃO 3) === */
-      .arrow-icon {
-        font-size: 1.2rem;
-        color: var(--accent-color); /* Ciano Neon */
-        opacity: 1; /* Removida a transparência para brilho total */
-        transition: all 0.3s ease;
-        /* LED SEMPRE ACESO: Brilho constante */
-        text-shadow:
-          0 0 8px var(--accent-color),
-          0 0 15px rgba(0, 243, 255, 0.5);
-      }
-
-      /* No hover, ela apenas ganha o movimento e um pequeno pico de luz */
-      .discovery-btn:hover .arrow-icon {
-        transform: translate(5px, -5px);
-        text-shadow:
-          0 0 12px var(--accent-color),
-          0 0 25px rgba(0, 243, 255, 0.8);
-      }
-
-      /* GARANTINDO QUE O TEXTO DA DIREITA ESTEJA LIMPO */
-      /* === PARTIÇÃO 3: NEON LINEAR E LIMPO === */
-      .tech-content-curiosity {
-        text-align: right;
-        padding-right: 3rem;
-        position: relative;
-        /* Removido qualquer contorno ou box-shadow de bloco */
-        border: none;
-      }
-
-      /* A BARRA NEON QUE VOCÊ GOSTOU (FIXA AO LADO DO TEXTO) */
-      .tech-content-curiosity::after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 6px; /* Espessura da barra */
-        height: 100%;
-        background: var(--accent-color);
-        /* Brilho Neon intenso projetado para fora */
-        box-shadow:
-          0 0 20px var(--accent-color),
-          0 0 40px rgba(0, 243, 255, 0.4);
-        border-radius: 2px;
-      }
-
-      .tech-content-curiosity h2 {
-        font-family: "Orbitron", sans-serif;
-        font-size: clamp(2.5rem, 4.5vw, 4rem);
-        line-height: 1.1;
-        margin-bottom: 1.5rem;
-        color: var(--structural-color);
-        letter-spacing: 2px;
-      }
-
-      .tech-content-curiosity p {
-        font-family: "Space Mono", monospace;
-        font-size: 1.15rem;
-        max-width: 550px;
-        margin-left: auto;
-        color: #888;
-        line-height: 1.7;
-      }
-
-      .highlight-neon {
-        color: var(--accent-color);
-        text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
-      }
-
-      /* === RODAPÉ (AJUSTADO) === */
-      footer {
-        background: #080808;
-        padding: 1.5rem 5%;
-        border-top: 1px solid rgba(255, 255, 255, 0.15);
-        font-size: 1.1rem;
-      }
-      .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 1.2fr 1fr;
-        gap: 2rem;
-        align-items: start;
-      }
-      .footer-col h4 {
-        color: var(--structural-color);
-        margin-bottom: 1.5rem;
-        font-size: 1.1rem;
-        letter-spacing: 1px;
-      }
-      /* NOVO ALINHAMENTO SOLICITADO */
-      .center-col {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      .center-col .nav-block {
-        width: 100%;
-        text-align: center; /* Centralizado */
-      }
-      .right-col {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-      }
-      .right-col .nav-block {
-        text-align: right; /* Direita para esquerda */
-        width: 100%;
-      }
-      .contact-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-      /* === PADRONIZAÇÃO DE FONTES DO RODAPÉ === */
-
-      /* Base: Links de Contato e Navegação */
-      .contact-link,
-      .nav-link {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: var(--text-color);
-        text-decoration: none;
-        transition: all 0.3s ease;
-
-        /* PADRÃO "NAVEGAÇÃO" SOLICITADO */
-        font-family: "Space Mono", monospace;
-        font-size: 1.05rem;
-        line-height: 1.6;
-      }
-
-      /* Ajuste específico para os SVGs acompanharem a fonte */
-      .contact-link svg {
-        width: 16px; /* Reduzi levemente para equilibrar com o Space Mono */
-        height: 16px;
-        fill: var(--text-color);
-        transition: all 0.3s ease;
-      }
-
-      /* Hover Unificado */
-      .contact-link:hover,
-      .nav-link:hover {
-        color: var(--accent-color);
-      }
-
-      .contact-link:hover svg {
-        fill: var(--accent-color);
-        filter: drop-shadow(0 0 5px var(--accent-color));
-      }
-      .nav-link {
-        display: block;
-        color: var(--footer-text);
-        text-decoration: none;
-        margin-bottom: 0.8rem;
-        transition: 0.3s;
-        font-size: 1.05rem;
-      }
-      .nav-link:hover {
-        color: var(--accent-color);
-      }
-      .footer-bottom {
-        max-width: 1200px;
-        margin: 1.5rem auto 0;
-        padding-top: 1rem;
-        border-top: 1px solid #1a1a1a;
-        text-align: center;
-        opacity: 0.6;
-        font-size: 0.95rem;
-      }
-      .system-status {
-        color: var(--accent-color);
-        font-weight: bold;
-        font-family: "Space Mono";
-        letter-spacing: 1px;
-        display: block;
-        margin-top: 10px;
-      }
+      /* === RODAPÉ === */
+      footer { background: #080808; padding: 1.5rem 5%; border-top: 1px solid rgba(255, 255, 255, 0.15); font-size: 1.1rem; }
+      .footer-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 2rem; align-items: start; }
+      .footer-col h4 { color: var(--structural-color); margin-bottom: 1.5rem; font-size: 1.1rem; letter-spacing: 1px; }
+      .center-col { display: flex; flex-direction: column; align-items: center; }
+      .center-col .nav-block { width: 100%; text-align: center; }
+      .right-col { display: flex; flex-direction: column; align-items: flex-end; }
+      .right-col .nav-block { text-align: right; width: 100%; }
+      .contact-list { display: flex; flex-direction: column; gap: 12px; }
+      .contact-link, .nav-link { display: flex; align-items: center; gap: 10px; color: var(--text-color); text-decoration: none; transition: all 0.3s ease; font-family: "Space Mono", monospace; font-size: 1.05rem; line-height: 1.6; }
+      .contact-link svg { width: 16px; height: 16px; fill: var(--text-color); transition: all 0.3s ease; }
+      .contact-link:hover, .nav-link:hover { color: var(--accent-color); }
+      .contact-link:hover svg { fill: var(--accent-color); filter: drop-shadow(0 0 5px var(--accent-color)); }
+      .nav-link { display: block; color: var(--footer-text); text-decoration: none; margin-bottom: 0.8rem; transition: 0.3s; font-size: 1.05rem; }
+      .footer-bottom { max-width: 1200px; margin: 1.5rem auto 0; padding-top: 1rem; border-top: 1px solid #1a1a1a; text-align: center; opacity: 0.6; font-size: 0.95rem; }
+      .system-status { color: var(--accent-color); font-weight: bold; font-family: "Space Mono"; letter-spacing: 1px; display: block; margin-top: 10px; }
 
       /* Modal Logo */
-      .image-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.9);
-        backdrop-filter: blur(5px);
-        z-index: 2000;
-        opacity: 0;
-        pointer-events: none;
-        transition: 0.3s;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .image-modal-overlay.active {
-        opacity: 1;
-        pointer-events: all;
-      }
-      /* Estilo do Modal - Efeito Tela Cheia Imersivo */
-      .modal-image-clone {
-        position: fixed;
-        /* Transição Suave e Progressiva */
-        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 2001;
-        filter: invert(1);
-        transform-origin: center center;
-        object-fit: contain; /* Mantém a proporção da logo */
-      }
+      .image-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px); z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s; display: flex; justify-content: center; align-items: center; }
+      .image-modal-overlay.active { opacity: 1; pointer-events: all; }
+      .modal-image-clone { position: fixed; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); z-index: 2001; filter: invert(1); transform-origin: center center; object-fit: contain; }
+      .modal-image-clone.centered { top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) scale(1) !important; width: 95vw !important; height: 85vh !important; max-width: 1400px; }
 
-      .modal-image-clone.centered {
-        top: 50% !important;
-        left: 50% !important;
-        /* Transform: centraliza e aumenta para ocupar a largura quase total */
-        transform: translate(-50%, -50%) scale(1) !important;
-
-        /* LARGURA AMPLIADA: OCUPA 95% DA TELA HORIZONTALMENTE */
-        width: 95vw !important;
-        height: 85vh !important; /* Altura um pouco menor para dar respiro */
-
-        max-width: 1400px; /* Limite para não pixelar em telas Ultra-Wide */
-      }
-
+      /* ========================================================= */
+      /* ====== OTIMIZAÇÃO MOBILE E RESPONSIVIDADE ====== */
+      /* ========================================================= */
       @media (max-width: 1100px) {
-        .product-card {
-          min-width: calc(50% - 1rem);
+        .product-card { min-width: calc(50% - 1rem); }
+        .hero-grid, .tech-authority-section, .footer-container { grid-template-columns: 1fr; text-align: center; }
+        .hero-content h1 { font-size: clamp(2.8rem, 5.5vw, 4.4rem); border-left: 6px solid var(--accent-color); padding-left: 2rem; box-shadow: -15px 0 30px -10px rgba(0, 243, 255, 0.8); }
+        
+        .discovery-terminal { align-items: center; }
+        .tech-content-curiosity { border-right: none; border-top: 5px solid var(--accent-color); padding: 2rem 0; text-align: center; }
+        .tech-content-curiosity::after { display: none; }
+        
+        /* === CORREÇÃO BLINDADA DO RODAPÉ (TABLET E CELULAR) === */
+        .footer-col { align-items: center !important; text-align: center !important; }
+        .center-col .nav-block, .right-col .nav-block { text-align: center !important; }
+        .contact-link, .nav-link { justify-content: center !important; text-align: center !important; }
+        /* Remove a margem extra do botão da direita para centralizar certinho */
+        .right-col .contact-link { margin-bottom: 1rem !important; }
+      }
+
+      @media (max-width: 768px) {
+        header { padding: 1rem 5%; }
+        .mobile-menu-btn { display: block; }
+        nav { 
+          display: none; position: absolute; top: 100%; left: 0; width: 100%; 
+          background: rgba(5,5,5,0.98); flex-direction: column; padding: 2rem 0; 
+          border-bottom: 1px solid var(--accent-color);
         }
-        .hero-grid,
-        .tech-authority-section,
-        .footer-container {
-          grid-template-columns: 1fr;
-          text-align: center;
-        }
-        .hero-content h1 {
-          font-size: clamp(2.8rem, 5.5vw, 4.4rem);
-          line-height: 1.1;
-          margin-bottom: 1.8rem;
-          border-left: 6px solid var(--accent-color); /* Espessura padronizada */
-          padding-left: 2rem;
-          /* EFEITO IRRADIAÇÃO ATIVADO */
-          box-shadow: -15px 0 30px -10px rgba(0, 243, 255, 0.8);
-        }
-        .discovery-terminal {
-          align-items: center;
-        }
-        .tech-content-curiosity {
-          border-right: none;
-          border-top: 5px solid var(--accent-color);
-          padding: 2rem 0;
-          text-align: center;
-        }
-        .center-col,
-        .right-col {
-          text-align: center;
-          align-items: center;
-        }
+        nav.nav-active { display: flex; }
+        nav a { margin: 0.5rem 0; font-size: 1.1rem; }
+
+        section.hero { padding-top: 120px; text-align: center; }
+        .hero-content h1 { border-left: none; padding-left: 0; border-top: 4px solid var(--accent-color); padding-top: 1rem; box-shadow: none; font-size: 2.2rem; }
+        .hero-content p, .brand-etymology { margin-left: auto; margin-right: auto; }
+        .gyro-tech-core { transform: scale(0.65); } 
+
+        .impact-section { padding: 4rem 0; }
+        /* Card mais fino para deixar as setas visíveis sem sobrepor */
+        .tesla-slider { padding: 2rem 15%; }
+        .product-card { min-width: 100%; } 
+        .slider-nav { width: 12%; background: rgba(0,0,0,0.8); }
       }
     </style>
   </head>
@@ -927,46 +306,41 @@
     <header>
       <a href="#hero" class="brand-home-link">
         <div class="header-left-group">
-          <div
-            class="logo-container"
-            onclick="
-              event.stopPropagation();
-              openLogoModal();
-            "
-          >
-            <img
-              src="LogoSemNome.png"
-              alt="Animus Integra"
-              id="header-logo-img"
-            />
+          <div class="logo-container" onclick="event.stopPropagation(); openLogoModal();">
+            <img src="LogoSemNome.png" alt="Animus Integra" id="header-logo-img" />
           </div>
           <span class="brand-text">Animus Integra</span>
         </div>
       </a>
-      <nav>
-        <a href="#hero">Início</a>
-        <a href="#solucoes">Integração</a>
-        <a href="#descoberta">Curiosidade</a>
-        <a href="#contato">Contato</a>
-      </nav>
+      
+      <div class="nav-container">
+        <button class="lang-toggle" onclick="toggleLanguage()">EN</button>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        <nav id="main-nav">
+          <a href="#hero" data-i18n="nav-home">Início</a>
+          <a href="#solucoes" data-i18n="nav-integration">Integração</a>
+          <a href="#descoberta" data-i18n="nav-curiosity">Curiosidade</a>
+          <a href="#contato" data-i18n="nav-contact">Contato</a>
+        </nav>
+      </div>
     </header>
 
     <section class="hero" id="hero">
       <div class="hero-grid">
         <div class="hero-content">
-          <h1>PROJETANDO A<br />REALIDADE FÍSICA<br />E DIGITAL.</h1>
-          <p>
+          <h1 data-i18n="hero-title">PROJETANDO A<br />REALIDADE FÍSICA<br />E DIGITAL.</h1>
+          <p data-i18n="hero-desc">
             O futuro não é mais uma projeção distante. A Animus Integra
             materializa ativos complexos no seu espaço agora. O digital
             finalmente encontrou sua forma física.
           </p>
-          <div class="brand-etymology">
+          <div class="brand-etymology" data-i18n="hero-etymology">
             Do latim <strong>Animus</strong> (alma, mente e intenção) e
             <strong>Integra</strong> (integrar, tornar inteiro). Nossa missão é
             fundir a intenção digital com a integridade do mundo físico, criando
             uma experiência única e sem barreiras.
           </div>
-          <a href="#solucoes" class="cta-btn">INICIAR INTEGRAÇÃO</a>
+          <a href="#solucoes" class="cta-btn" data-i18n="hero-cta">INICIAR INTEGRAÇÃO</a>
         </div>
         <div class="hero-visual">
           <div class="gyro-tech-core" id="gyro-tech">
@@ -985,8 +359,8 @@
 
     <section class="impact-section" id="solucoes">
       <div class="impact-header">
-        <h2>O MUNDO NA PALMA DA SUA MÃO</h2>
-        <p>
+        <h2 data-i18n="slider-title">O MUNDO NA PALMA DA SUA MÃO</h2>
+        <p data-i18n="slider-desc">
           A versatilidade da WebAR integrada aos fluxos de grandes empresas e
           marcas líderes. Explore a praticidade de materializar qualquer produto
           instantaneamente.
@@ -998,170 +372,83 @@
         <div class="tesla-slider" id="mainSlider">
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Cadeira.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.3"
-                camera-orbit="45deg 55deg auto"
-              ></model-viewer>
+              <model-viewer src="Cadeira.glb" loading="lazy" auto-rotate camera-controls exposure="0.3" camera-orbit="45deg 55deg auto"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>VAREJO DE MÓVEIS</h3>
-              <p>
-                Possibilite que seu cliente teste sofás e mesas no ambiente real
-                com precisão milimétrica.
-              </p>
+              <h3 data-i18n="card1-title">VAREJO DE MÓVEIS</h3>
+              <p data-i18n="card1-desc">Possibilite que seu cliente teste sofás e mesas no ambiente real com precisão milimétrica.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Cocktop.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.2"
-                camera-orbit="45deg 55deg auto"
-              ></model-viewer>
+              <model-viewer src="Cocktop.glb" loading="lazy" auto-rotate camera-controls exposure="0.2" camera-orbit="45deg 55deg auto"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>APARELHOS DOMÉSTICOS</h3>
-              <p>
-                Integre a visualização técnica de refrigeradores e fogões
-                diretamente na cozinha do usuário.
-              </p>
+              <h3 data-i18n="card2-title">APARELHOS DOMÉSTICOS</h3>
+              <p data-i18n="card2-desc">Integre a visualização técnica de refrigeradores e fogões diretamente na cozinha do usuário.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Luminária.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.3"
-              ></model-viewer>
+              <model-viewer src="Luminária.glb" loading="lazy" auto-rotate camera-controls exposure="0.3"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>DECORAÇÃO PREMIUM</h3>
-              <p>
-                Transforme luminárias e quadros em ativos digitais projetados
-                com fidelidade de luz.
-              </p>
+              <h3 data-i18n="card3-title">DECORAÇÃO PREMIUM</h3>
+              <p data-i18n="card3-desc">Transforme luminárias e quadros em ativos digitais projetados com fidelidade de luz.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Anel.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.7"
-              ></model-viewer>
+              <model-viewer src="Anel.glb" loading="lazy" auto-rotate camera-controls exposure="0.7"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>JOIAS & RELÓGIOS</h3>
-              <p>
-                Gere desejo através da interatividade 360° com realismo
-                fotográfico de materiais preciosos.
-              </p>
+              <h3 data-i18n="card4-title">JOIAS & RELÓGIOS</h3>
+              <p data-i18n="card4-desc">Gere desejo através da interatividade 360° com realismo fotográfico de materiais preciosos.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="PonteH.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.5"
-                camera-orbit="45deg 55deg auto"
-              ></model-viewer>
+              <model-viewer src="PonteH.glb" loading="lazy" auto-rotate camera-controls exposure="0.5" camera-orbit="45deg 55deg auto"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>GADGETS & TECH</h3>
-              <p>
-                Exponha hardware complexo para análise de ergonomia e detalhes
-                técnicos via WebAR.
-              </p>
+              <h3 data-i18n="card5-title">GADGETS & TECH</h3>
+              <p data-i18n="card5-desc">Exponha hardware complexo para análise de ergonomia e detalhes técnicos via WebAR.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Cavalo.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.5"
-                camera-orbit="45deg 55deg auto"
-              ></model-viewer>
+              <model-viewer src="Cavalo.glb" loading="lazy" auto-rotate camera-controls exposure="0.5" camera-orbit="45deg 55deg auto"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>HOBBIES & ARTE</h3>
-              <p>
-                Dê vida a action figures e colecionáveis na estante do comprador
-                antes da conversão final.
-              </p>
+              <h3 data-i18n="card6-title">HOBBIES & ARTE</h3>
+              <p data-i18n="card6-desc">Dê vida a action figures e colecionáveis na estante do comprador antes da conversão final.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Embalagem.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.8"
-              ></model-viewer>
+              <model-viewer src="Embalagem.glb" loading="lazy" auto-rotate camera-controls exposure="0.8"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>DESIGN DE EMBALAGEM</h3>
-              <p>
-                Valide a presença de prateleira e pontos de venda (PDV) através
-                de protótipos digitais.
-              </p>
+              <h3 data-i18n="card7-title">DESIGN DE EMBALAGEM</h3>
+              <p data-i18n="card7-desc">Valide a presença de prateleira e pontos de venda (PDV) através de protótipos digitais.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="BraçoArticulado.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.5"
-                camera-orbit="180deg 80deg auto"
-              ></model-viewer>
+              <model-viewer src="BraçoArticulado.glb" loading="lazy" auto-rotate camera-controls exposure="0.5" camera-orbit="180deg 80deg auto"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>ATIVOS INDUSTRIAIS</h3>
-              <p>
-                Integre o posicionamento de máquinas e painéis técnicos em
-                plantas fabris complexas.
-              </p>
+              <h3 data-i18n="card8-title">ATIVOS INDUSTRIAIS</h3>
+              <p data-i18n="card8-desc">Integre o posicionamento de máquinas e painéis técnicos em plantas fabris complexas.</p>
             </div>
           </div>
           <div class="product-card">
             <div class="card-img-placeholder">
-              <model-viewer
-                src="Dumbell.glb"
-                loading="lazy"
-                auto-rotate
-                camera-controls
-                exposure="0.4"
-                camera-orbit="-45deg 55deg auto"
-              ></model-viewer>
+              <model-viewer src="Dumbell.glb" loading="lazy" auto-rotate camera-controls exposure="0.4" camera-orbit="-45deg 55deg auto"></model-viewer>
             </div>
             <div class="card-content">
-              <h3>EQUIPAMENTOS FITNESS</h3>
-              <p>
-                Permita a validação de espaço para esteiras e ativos fitness em
-                ambientes residenciais.
-              </p>
+              <h3 data-i18n="card9-title">EQUIPAMENTOS FITNESS</h3>
+              <p data-i18n="card9-desc">Permita a validação de espaço para esteiras e ativos fitness em ambientes residenciais.</p>
             </div>
           </div>
           <div class="product-card">
@@ -1173,11 +460,8 @@
               </div>
             </div>
             <div class="card-content">
-              <h3>EXPANDINDO FRONTEIRAS</h3>
-              <p>
-                As possibilidades são infinitas. Integre qualquer ativo ou visão
-                técnica à nossa WebAR.
-              </p>
+              <h3 data-i18n="card10-title">EXPANDINDO FRONTEIRAS</h3>
+              <p data-i18n="card10-desc">As possibilidades são infinitas. Integre qualquer ativo ou visão técnica à nossa WebAR.</p>
             </div>
           </div>
         </div>
@@ -1185,32 +469,30 @@
     </section>
 
     <section class="tech-authority-section" id="descoberta">
-      <div class="discovery-terminal">
-        <a href="PorQueInvestirNoInvisível.html" class="discovery-btn">
-          <span>Por que investir no invisível?</span>
-          <span class="arrow-icon">↗</span>
-        </a>
-        <a href="OVerdadeiroObjetivo.html" class="discovery-btn">
-          <span>O verdadeiro objetivo da Animus Integra</span>
-          <span class="arrow-icon">↗</span>
-        </a>
-        <a href="ComoIssoMuda.html" class="discovery-btn">
-          <span>Como isso muda a forma que consumimos?</span>
-          <span class="arrow-icon">↗</span>
-        </a>
-      </div>
-
       <div class="tech-content-curiosity">
-        <h2>
-          ALÉM DA<br />SUPERFÍCIE<br /><span class="highlight-neon"
-            >DIGITAL</span
-          >
+        <h2 data-i18n="tech-title">
+          ALÉM DA<br />SUPERFÍCIE<br /><span class="highlight-neon">DIGITAL</span>
         </h2>
-        <p>
+        <p data-i18n="tech-desc">
           Percebeu que não estamos apenas criando modelos 3D? Há uma razão
           estratégica para fundirmos a
           <span class="highlight-neon">engenharia</span> com a web.
         </p>
+      </div>
+      
+      <div class="discovery-terminal">
+        <a href="PorQueInvestirNoInvisível.html" class="discovery-btn">
+          <span data-i18n="btn-invest">Por que investir no invisível?</span>
+          <span class="arrow-icon">↗</span>
+        </a>
+        <a href="OVerdadeiroObjetivo.html" class="discovery-btn">
+          <span data-i18n="btn-purpose">O verdadeiro objetivo da Animus Integra</span>
+          <span class="arrow-icon">↗</span>
+        </a>
+        <a href="ComoIssoMuda.html" class="discovery-btn">
+          <span data-i18n="btn-impact">Como isso muda a forma que consumimos?</span>
+          <span class="arrow-icon">↗</span>
+        </a>
       </div>
     </section>
 
@@ -1219,42 +501,37 @@
         <div class="footer-col">
           <h4>ANIMUS INTEGRA</h4>
           <div class="contact-list">
-            <a href="#" onclick="copyToClipboard(event, 'contato@animusintegra.com')" class="contact-link"
-              ><svg viewBox="0 0 24 24">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg><span>contato@animusintegra.com</span></a
-            >
-            <a href="https://www.instagram.com/animusintegra/" target="_blank" class="contact-link"
-              ><svg viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07M12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
-              </svg><span>Instagram Oficial</span></a
-            >
-            <a href="https://www.linkedin.com/company/animus-integra/" target="_blank" class="contact-link"
-              ><svg viewBox="0 0 24 24">
-                <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
-              </svg><span>Linkedin Oficial</span></a
-            >
+            <a href="#" onclick="copyToClipboard(event, 'contato@animusintegra.com')" class="contact-link">
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              <span>contato@animusintegra.com</span>
+            </a>
+            <a href="https://www.instagram.com/animusintegra/" target="_blank" class="contact-link">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.07M12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              <span>Instagram Oficial</span>
+            </a>
+            <a href="https://www.linkedin.com/company/animus-integra/" target="_blank" class="contact-link">
+              <svg viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+              <span>Linkedin Oficial</span>
+            </a>
           </div>
         </div>
         <div class="footer-col center-col">
           <div class="nav-block">
-            <h4>NAVEGAÇÃO</h4>
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="CasesEAtuação.html" class="nav-link">Cases & Atuação</a>
-            <a href="SobreNós.html" class="nav-link">Sobre nós</a>
+            <h4 data-i18n="nav-title">NAVEGAÇÃO</h4>
+            <a href="#hero" class="nav-link" data-i18n="nav-home">Home</a>
+            <a href="CasesEAtuação.html" class="nav-link" data-i18n="nav-cases">Cases & Atuação</a>
+            <a href="SobreNós.html" class="nav-link" data-i18n="nav-about">Sobre nós</a>
           </div>
         </div>
         <div class="footer-col right-col">
           <div class="nav-block">
-            <h4>SUPORTE TÉCNICO</h4>
+            <h4 data-i18n="support-title">SUPORTE TÉCNICO</h4>
             <a href="#" onclick="copyToClipboard(event, 'suporte@animusintegra.com')" class="contact-link" style="justify-content: flex-end; margin-bottom: 0.8rem;">
               <span>suporte@animusintegra.com</span>
-              <svg viewBox="0 0 24 24">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
             </a>
-            <a href="DocumentaçãoWebAR.html" class="nav-link">Documentação WebAR</a>
-            <a href="TermosDeServiço.html" class="nav-link">Termos de Serviço</a>
+            <a href="DocumentaçãoWebAR.html" class="nav-link" data-i18n="nav-docs">Documentação WebAR</a>
+            <a href="TermosDeServiço.html" class="nav-link" data-i18n="nav-terms">Termos de Serviço</a>
           </div>
         </div>
       </div>
@@ -1264,131 +541,180 @@
       </div>
     </footer>
 
-    <div
-      class="image-modal-overlay"
-      id="logo-modal"
-      onclick="closeLogoModal()"
-    ></div>
+    <div class="image-modal-overlay" id="logo-modal" onclick="closeLogoModal()"></div>
 
     <script>
-      const gyroTech = document.getElementById("gyro-tech");
-      document.addEventListener("mousemove", (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 2;
-        const y = (e.clientY / window.innerHeight - 0.5) * 2;
-        gyroTech.style.transform = `rotateX(${y * -20}deg) rotateY(${x * 20}deg)`;
+      /* === LÓGICA DE INTERNACIONALIZAÇÃO (i18n) === */
+      const dictionary = {
+        pt: {
+          "nav-home": "Início", "nav-integration": "Integração", "nav-curiosity": "Curiosidade", "nav-contact": "Contato",
+          "nav-cases": "Cases & Atuação", "nav-about": "Sobre nós", "nav-title": "NAVEGAÇÃO", "support-title": "SUPORTE TÉCNICO",
+          "nav-docs": "Documentação WebAR", "nav-terms": "Termos de Serviço",
+          "hero-title": "PROJETANDO A<br />REALIDADE FÍSICA<br />E DIGITAL.",
+          "hero-desc": "O futuro não é mais uma projeção distante. A Animus Integra materializa ativos complexos no seu espaço agora. O digital finalmente encontrou sua forma física.",
+          "hero-etymology": "Do latim <strong>Animus</strong> (alma, mente e intenção) e <strong>Integra</strong> (integrar, tornar inteiro). Nossa missão é fundir a intenção digital com a integridade do mundo físico, criando uma experiência única e sem barreiras.",
+          "hero-cta": "INICIAR INTEGRAÇÃO",
+          "slider-title": "O MUNDO NA PALMA DA SUA MÃO",
+          "slider-desc": "A versatilidade da WebAR integrada aos fluxos de grandes empresas e marcas líderes. Explore a praticidade de materializar qualquer produto instantaneamente.",
+          "card1-title": "VAREJO DE MÓVEIS", "card1-desc": "Possibilite que seu cliente teste sofás e mesas no ambiente real com precisão milimétrica.",
+          "card2-title": "APARELHOS DOMÉSTICOS", "card2-desc": "Integre a visualização técnica de refrigeradores e fogões diretamente na cozinha do usuário.",
+          "card3-title": "DECORAÇÃO PREMIUM", "card3-desc": "Transforme luminárias e quadros em ativos digitais projetados com fidelidade de luz.",
+          "card4-title": "JOIAS & RELÓGIOS", "card4-desc": "Gere desejo através da interatividade 360° com realismo fotográfico de materiais preciosos.",
+          "card5-title": "GADGETS & TECH", "card5-desc": "Exponha hardware complexo para análise de ergonomia e detalhes técnicos via WebAR.",
+          "card6-title": "HOBBIES & ARTE", "card6-desc": "Dê vida a action figures e colecionáveis na estante do comprador antes da conversão final.",
+          "card7-title": "DESIGN DE EMBALAGEM", "card7-desc": "Valide a presença de prateleira e pontos de venda (PDV) através de protótipos digitais.",
+          "card8-title": "ATIVOS INDUSTRIAIS", "card8-desc": "Integre o posicionamento de máquinas e painéis técnicos em plantas fabris complexas.",
+          "card9-title": "EQUIPAMENTOS FITNESS", "card9-desc": "Permita a validação de espaço para esteiras e ativos fitness em ambientes residenciais.",
+          "card10-title": "EXPANDINDO FRONTEIRAS", "card10-desc": "As possibilidades são infinitas. Integre qualquer ativo ou visão técnica à nossa WebAR.",
+          "btn-invest": "Por que investir no invisível?", "btn-purpose": "O verdadeiro objetivo da Animus Integra", "btn-impact": "Como isso muda a forma que consumimos?",
+          "tech-title": "ALÉM DA<br />SUPERFÍCIE<br /><span class='highlight-neon'>DIGITAL</span>",
+          "tech-desc": "Percebeu que não estamos apenas criando modelos 3D? Há uma razão estratégica para fundirmos a <span class='highlight-neon'>engenharia</span> com a web."
+        },
+        en: {
+          "nav-home": "Home", "nav-integration": "Integration", "nav-curiosity": "Curiosity", "nav-contact": "Contact",
+          "nav-cases": "Use Cases", "nav-about": "About Us", "nav-title": "NAVIGATION", "support-title": "TECHNICAL SUPPORT",
+          "nav-docs": "WebAR Documentation", "nav-terms": "Terms of Service",
+          "hero-title": "PROJECTING<br />PHYSICAL & DIGITAL<br />REALITY.",
+          "hero-desc": "The future is no longer a distant projection. Animus Integra materializes complex assets in your space right now. The digital has finally found its physical form.",
+          "hero-etymology": "From Latin <strong>Animus</strong> (soul, mind, intent) and <strong>Integra</strong> (to make whole). Our mission is to merge digital intent with the integrity of the physical world, creating a seamless experience.",
+          "hero-cta": "START INTEGRATION",
+          "slider-title": "THE WORLD IN THE PALM OF YOUR HAND",
+          "slider-desc": "The versatility of WebAR integrated into the workflows of large enterprises and leading brands. Explore the practicality of materializing any product instantly.",
+          "card1-title": "FURNITURE RETAIL", "card1-desc": "Enable your clients to test sofas and tables in real environments with millimeter precision.",
+          "card2-title": "HOME APPLIANCES", "card2-desc": "Integrate the technical visualization of refrigerators and stoves directly into the user's kitchen.",
+          "card3-title": "PREMIUM DECOR", "card3-desc": "Transform lighting and paintings into digital assets projected with lighting fidelity.",
+          "card4-title": "JEWELRY & WATCHES", "card4-desc": "Generate desire through 360° interactivity with photographic realism of precious materials.",
+          "card5-title": "GADGETS & TECH", "card5-desc": "Showcase complex hardware for ergonomic analysis and technical details via WebAR.",
+          "card6-title": "HOBBIES & ART", "card6-desc": "Bring action figures and collectibles to life on the buyer's shelf before the final conversion.",
+          "card7-title": "PACKAGING DESIGN", "card7-desc": "Validate shelf presence and point-of-sale (POS) displays through digital prototypes.",
+          "card8-title": "INDUSTRIAL ASSETS", "card8-desc": "Integrate the positioning of machines and technical panels in complex manufacturing plants.",
+          "card9-title": "FITNESS EQUIPMENT", "card9-desc": "Allow space validation for treadmills and fitness assets in residential environments.",
+          "card10-title": "EXPANDING BORDERS", "card10-desc": "The possibilities are endless. Integrate any asset or technical vision into our WebAR.",
+          "btn-invest": "Why invest in the invisible?", "btn-purpose": "The true goal of Animus Integra", "btn-impact": "How does this change consumption?",
+          "tech-title": "BEYOND THE<br />DIGITAL<br /><span class='highlight-neon'>SURFACE</span>",
+          "tech-desc": "Notice we're not just creating 3D models? There's a strategic reason we merge <span class='highlight-neon'>engineering</span> with the web."
+        }
+      };
+
+      let currentLang = 'pt';
+      
+      function setLanguage(lang) {
+        currentLang = lang;
+        document.querySelector('.lang-toggle').innerText = lang === 'pt' ? 'EN' : 'PT';
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n');
+          if(dictionary[lang][key]) el.innerHTML = dictionary[lang][key];
+        });
+      }
+
+      function toggleLanguage() {
+        setLanguage(currentLang === 'pt' ? 'en' : 'pt');
+      }
+
+      // Detecção automática de idioma
+      window.addEventListener('DOMContentLoaded', () => {
+        const userLang = navigator.language || navigator.userLanguage;
+        if(userLang.startsWith('en')) setLanguage('en');
+        else setLanguage('pt'); 
       });
 
+      /* === LÓGICA DO MENU MOBILE === */
+      function toggleMobileMenu() {
+        document.getElementById('main-nav').classList.toggle('nav-active');
+      }
+
+      /* === LÓGICA DO GIROSCÓPIO 3D === */
+      const gyroTech = document.getElementById("gyro-tech");
+      if(window.innerWidth > 768) {
+        document.addEventListener("mousemove", (e) => {
+          const x = (e.clientX / window.innerWidth - 0.5) * 2;
+          const y = (e.clientY / window.innerHeight - 0.5) * 2;
+          gyroTech.style.transform = `rotateX(${y * -20}deg) rotateY(${x * 20}deg)`;
+        });
+      }
+
+      /* === LÓGICA DO SLIDER (RESPONSIVO) === */
       function moveSlider(direction) {
         const slider = document.getElementById("mainSlider");
-        const cardWidth =
-          slider.querySelector(".product-card").offsetWidth +
-          parseFloat(getComputedStyle(slider).gap);
-        slider.style.transition =
-          "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)";
+        const card = slider.querySelector(".product-card");
+        const cardWidth = card.offsetWidth + parseFloat(getComputedStyle(slider).gap);
+        
+        const itemsToMove = window.innerWidth <= 1100 ? 1 : 5;
+        const moveDistance = cardWidth * itemsToMove;
+
+        slider.style.transition = "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)";
+        
         if (direction === 1) {
-          slider.style.transform = `translateX(-${cardWidth * 5}px)`;
+          slider.style.transform = `translateX(-${moveDistance}px)`;
           setTimeout(() => {
             slider.style.transition = "none";
-            for (let i = 0; i < 5; i++)
-              slider.appendChild(slider.firstElementChild);
+            for (let i = 0; i < itemsToMove; i++) slider.appendChild(slider.firstElementChild);
             slider.style.transform = `translateX(0)`;
           }, 600);
         } else {
           slider.style.transition = "none";
-          for (let i = 0; i < 5; i++) slider.prepend(slider.lastElementChild);
-          slider.style.transform = `translateX(-${cardWidth * 5}px)`;
+          for (let i = 0; i < itemsToMove; i++) slider.prepend(slider.lastElementChild);
+          slider.style.transform = `translateX(-${moveDistance}px)`;
           setTimeout(() => {
-            slider.style.transition =
-              "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)";
+            slider.style.transition = "transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)";
             slider.style.transform = `translateX(0)`;
           }, 50);
         }
       }
 
+      /* === LÓGICA DO MODAL DA LOGO === */
       let clone = null;
-
       function openLogoModal() {
         const originalLogo = document.getElementById("header-logo-img");
         const modal = document.getElementById("logo-modal");
         const rect = originalLogo.getBoundingClientRect();
-
         clone = document.createElement("img");
         clone.classList.add("modal-image-clone");
         clone.src = originalLogo.src;
-
-        // Define a posição inicial idêntica à posição atual no header
-        clone.style.top = `${rect.top}px`;
-        clone.style.left = `${rect.left}px`;
-        clone.style.width = `${rect.width}px`;
-        clone.style.height = `${rect.height}px`;
-
+        clone.style.top = `${rect.top}px`; clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`; clone.style.height = `${rect.height}px`;
         modal.appendChild(clone);
         modal.classList.add("active");
-
-        // Força o navegador a processar a posição inicial antes de animar
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
-            clone.src = "AnimusIntegra.png"; // Troca para a logo completa
+            clone.src = "AnimusIntegra.png"; 
             clone.classList.add("centered");
           });
         });
       }
 
-      // === LÓGICA DE CÓPIA DE EMAIL ===
+      /* === LÓGICA DE CÓPIA DE EMAIL === */
       let toastTimeout;
       function copyToClipboard(event, text) {
-        event.preventDefault(); // Evita que a página role para o topo ao clicar no link "#"
-        
+        event.preventDefault(); 
         navigator.clipboard.writeText(text).then(() => {
           let toast = document.getElementById('copy-toast-msg');
-          
-          // Se o toast não existir ainda, cria ele
           if (!toast) {
             toast = document.createElement('div');
             toast.id = 'copy-toast-msg';
             toast.className = 'copy-toast';
-            toast.innerText = 'Copiado para a área de transferência!';
+            toast.innerText = currentLang === 'en' ? 'Copied to clipboard!' : 'Copiado para a área de transferência!';
             document.body.appendChild(toast);
           }
-          
-          // Posiciona o balãozinho perto de onde o usuário clicou
           toast.style.left = (event.clientX + 15) + 'px';
           toast.style.top = (event.clientY + 15) + 'px';
-          
           toast.classList.add('show');
-          
-          // Esconde depois de 2 segundos
           clearTimeout(toastTimeout);
-          toastTimeout = setTimeout(() => {
-            toast.classList.remove('show');
-          }, 2000);
+          toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 2000);
         });
       }
 
       function closeLogoModal() {
         const modal = document.getElementById("logo-modal");
         if (!clone) return;
-
         const originalLogo = document.getElementById("header-logo-img");
         const rect = originalLogo.getBoundingClientRect();
-
         clone.classList.remove("centered");
-        clone.src = "LogoSemNome.png"; // Volta para a logo minimalista
-
-        // Retorna para o local de origem
-        clone.style.top = `${rect.top}px`;
-        clone.style.left = `${rect.left}px`;
-        clone.style.width = `${rect.width}px`;
-        clone.style.height = `${rect.height}px`;
-
+        clone.src = "LogoSemNome.png"; 
+        clone.style.top = `${rect.top}px`; clone.style.left = `${rect.left}px`;
+        clone.style.width = `${rect.width}px`; clone.style.height = `${rect.height}px`;
         modal.classList.remove("active");
-
-        setTimeout(() => {
-          if (clone && modal.contains(clone)) {
-            modal.removeChild(clone);
-            clone = null;
-          }
-        }, 500);
+        setTimeout(() => { if (clone && modal.contains(clone)) { modal.removeChild(clone); clone = null; } }, 500);
       }
 
       document.querySelectorAll("model-viewer").forEach((viewer) => {
